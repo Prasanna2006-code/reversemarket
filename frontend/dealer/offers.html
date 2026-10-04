@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Submitted Offers - ReverseMarket Dealer</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .submit-new-btn {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .submit-new-btn:hover {
+            background: #b20710;
+        }
+
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        .offer-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+        }
+
+        .offer-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        }
+
+        .offer-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .offer-card-top h3 {
+            font-size: 19px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-badge.active-status {
+            background: #eef2ff;
+            color: #3b5bdb;
+            border: 1px solid #d0dbfc;
+        }
+
+        .status-badge.won {
+            background: #e9f8ed;
+            color: #16852d;
+            border: 1px solid #c3e6cb;
+        }
+
+        .price-tag {
+            font-size: 24px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            font-size: 14px;
+            color: #111;
+        }
+
+        .offer-msg {
+            background: #fdfdfd;
+            border-left: 3px solid #e50914;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .offer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn-withdraw {
+            background: transparent;
+            color: #888;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-withdraw:hover {
+            color: #e50914;
+            border-color: #e50914;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">TechWorld Electronics</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html" class="active">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="page-heading">
+            <div class="heading-text">
+                <h1>My Submitted Quotations</h1>
+                <p>Track bids and offers submitted to clients across all active procurement inquiries.</p>
+            </div>
+
+            <a href="submit-offer.html" class="submit-new-btn">
+                + Submit New Offer
+            </a>
+        </div>
+
+        <div class="controls-card">
+            <div class="search-input-wrapper">
+                <input type="text" id="searchInput" placeholder="Search by requirement or price..." oninput="handleSearch()">
+            </div>
+            <span id="offersCount" style="font-size:13px; color:#666; font-weight:600;">Loading...</span>
+        </div>
+
+        <div id="offersList"></div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    let offers = [];
+    let searchQuery = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+
+        offers = await DealerModule.getDealerOffers();
+        renderOffers();
+    });
+
+    function handleSearch() {
+        searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+        renderOffers();
+    }
+
+    function renderOffers() {
+        const container = document.getElementById("offersList");
+
+        const filtered = offers.filter(o => {
+            if (searchQuery) {
+                return (o.requirementTitle || '').toLowerCase().includes(searchQuery) ||
+                       String(o.price || '').includes(searchQuery) ||
+                       (o.message || '').toLowerCase().includes(searchQuery);
+            }
+            return true;
+        });
+
+        document.getElementById("offersCount").textContent = `${filtered.length} Quotation${filtered.length === 1 ? '' : 's'}`;
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div style="background:white; border:1px solid #ddd; border-radius:6px; padding:60px 20px; text-align:center;">
+                    <h2>No Submitted Offers</h2>
+                    <p style="color:#666; margin-top:8px;">Browse open customer requirements to submit your first quotation.</p>
+                    <a href="requirements.html" class="submit-new-btn" style="margin-top:15px;">Browse Requirements</a>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = filtered.map(offer => {
+            const formattedPrice = `₹${Number(offer.price || 0).toLocaleString("en-IN")}`;
+            return `
+                <div class="offer-card">
+                    <div class="offer-card-top">
+                        <div>
+                            <h3>For: ${escapeHTML(offer.requirementTitle || 'Customer Requirement')}</h3>
+                            <span style="font-size:12px; color:#777;">Quote ID: #${offer.id}</span>
+                        </div>
+
+                        <div style="text-align:right;">
+                            <span class="price-tag">${formattedPrice}</span>
+                            <span class="status-badge active-status" style="margin-top:4px; display:inline-block;">Under Review</span>
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <small>Delivery Commitment</small>
+                            <strong>${offer.deliveryDays || 5} Days</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Warranty</small>
+                            <strong>${escapeHTML(offer.warranty || 'Brand Warranty')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Condition</small>
+                            <strong>${escapeHTML(offer.condition || 'New')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Commercial Terms</small>
+                            <strong>${escapeHTML(offer.paymentTerms || 'Standard')}</strong>
+                        </div>
+                    </div>
+
+                    <div class="offer-msg">
+                        "${escapeHTML(offer.message || 'Competitive quotation provided.')}"
+                    </div>
+
+                    <div class="offer-footer">
+                        <span style="font-size:12px; color:#888;">Submitted via ReverseMarket Verified Channel</span>
+                        <button class="btn-withdraw" onclick="withdrawOffer('${offer.id}')">
+                            Withdraw Quote
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function withdrawOffer(id) {
+        if (!confirm("Are you sure you want to withdraw this quote?")) return;
+        offers = offers.filter(o => String(o.id) !== String(id));
+        localStorage.setItem("offers", JSON.stringify(offers));
+        renderOffers();
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

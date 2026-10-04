@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Details - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* =========================
+           PAGE & BASE
+        ========================= */
+        .details-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .details-main {
+            max-width: 950px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            color: #e50914;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FORM CARD (POST-REQUIREMENT STYLE)
+        ========================= */
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .dealer-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dealer-info-left h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-verified {
+            background: #e7f5ff;
+            color: #1c7ed6;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid #d0ebff;
+        }
+
+        .dealer-meta {
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .dealer-meta .rating {
+            color: #f59f00;
+            font-weight: bold;
+        }
+
+        .price-highlight-box {
+            text-align: right;
+        }
+
+        .price-highlight-box strong {
+            display: block;
+            font-size: 32px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .price-highlight-box small {
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* =========================
+           DETAILS GRID
+        ========================= */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .detail-box {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 14px 16px;
+        }
+
+        .detail-box small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-box strong {
+            font-size: 15px;
+            color: #111;
+            display: block;
+            word-break: break-word;
+        }
+
+        .message-box {
+            background: #f9f9f9;
+            border-left: 4px solid #e50914;
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* =========================
+           FORM ACTIONS (MATCHING POST-REQUIREMENT)
+        ========================= */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 14px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .cancel-button {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .cancel-button:hover {
+            background: #f3f3f3;
+        }
+
+        .compare-button {
+            background: #202020;
+            color: white;
+            border: 1px solid #202020;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .compare-button:hover {
+            background: #333;
+        }
+
+        .submit-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 28px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #b20710;
+        }
+
+        /* =========================
+           EMPTY/ERROR CARD
+        ========================= */
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 768px) {
+            .client-header {
+                padding: 10px 15px;
+            }
+
+            .header-user {
+                display: none;
+            }
+
+            .details-main {
+                padding: 25px 15px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .price-highlight-box {
+                text-align: left;
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .cancel-button,
+            .compare-button,
+            .submit-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="details-page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="details-main">
+
+        <div class="breadcrumb">
+            <a href="offers.html">Offers</a>
+            <span>›</span>
+            <span>Offer Details</span>
+        </div>
+
+        <div class="page-heading">
+            <div>
+                <h1>Offer Details</h1>
+                <p>Review the comprehensive proposal, warranty, and payment terms before selecting this dealer.</p>
+            </div>
+            <a href="offers.html" class="cancel-button">
+                ← Back to Offers
+            </a>
+        </div>
+
+        <div id="offerContainer">
+            <!-- Dynamically populated -->
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+    let offer = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadUser();
+        loadOfferDetails();
+    });
+
+    function loadUser() {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                if (user.name) {
+                    document.getElementById("userName").textContent = user.name;
+                }
+            } catch (e) {
+                console.error("Error parsing user:", e);
+            }
+        }
+    }
+
+    function loadOfferDetails() {
+        const container = document.getElementById("offerContainer");
+        const selectedRaw = localStorage.getItem("selectedOffer");
+
+        if (selectedRaw) {
+            try {
+                if (selectedRaw.startsWith("{")) {
+                    offer = JSON.parse(selectedRaw);
+                } else {
+                    const allOffers = JSON.parse(localStorage.getItem("offers") || "[]");
+                    offer = allOffers.find(o => String(o.id) === String(selectedRaw));
+                }
+            } catch (e) {
+                console.error("Error reading selected offer:", e);
+            }
+        }
+
+        // Fallback default demo offer if accessed directly
+        if (!offer) {
+            const allOffers = JSON.parse(localStorage.getItem("offers") || "[]");
+            if (allOffers.length > 0) {
+                offer = allOffers[0];
+            } else {
+                offer = {
+                    id: "offer101",
+                    requirementId: "1728001001",
+                    requirementTitle: "10 Gaming Laptops",
+                    dealerName: "TechWorld Electronics",
+                    verified: true,
+                    rating: 4.8,
+                    reviews: 126,
+                    price: 720000,
+                    deliveryDays: 5,
+                    warranty: "1 Year Official Brand Warranty",
+                    condition: "New",
+                    paymentTerms: "50% Advance, 50% on Delivery",
+                    message: "Official brand partner units in factory sealed packaging with serial registration. Delivered via insured courier with setup assistance included.",
+                    createdAt: new Date().toISOString()
+                };
+            }
+        }
+
+        renderOffer(container);
+    }
+
+    function renderOffer(container) {
+        const formattedPrice = `₹${Number(offer.price || 0).toLocaleString("en-IN")}`;
+
+        container.innerHTML = `
+            <div class="form-card">
+
+                <div class="dealer-banner">
+                    <div class="dealer-info-left">
+                        <h2>
+                            ${escapeHTML(offer.dealerName)}
+                            ${offer.verified ? '<span class="badge-verified">✓ Verified Dealer</span>' : ''}
+                        </h2>
+                        <div class="dealer-meta">
+                            <span class="rating">★ ${offer.rating || 4.5}</span>
+                            <span>(${offer.reviews || 0} customer reviews)</span>
+                            <span>•</span>
+                            <span>Direct Manufacturer Channel</span>
+                        </div>
+                    </div>
+
+                    <div class="price-highlight-box">
+                        <strong>${formattedPrice}</strong>
+                        <small>Total Quoted Price (Taxes Included)</small>
+                    </div>
+                </div>
+
+                <!-- SECTION 01: REQUIREMENT CONTEXT -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>01</span>
+                        Requirement Context
+                    </h2>
+
+                    <div class="details-grid">
+                        <div class="detail-box">
+                            <small>Item / Scope</small>
+                            <strong>${escapeHTML(offer.requirementTitle || 'Requirement')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Product Condition</small>
+                            <strong>${escapeHTML(offer.condition || 'New')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Quoted Delivery Time</small>
+                            <strong>${offer.deliveryDays} Calendar Days</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Warranty Period</small>
+                            <strong>${escapeHTML(offer.warranty || 'Standard Warranty')}</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: COMMERCIAL TERMS -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>02</span>
+                        Commercials & Payment
+                    </h2>
+
+                    <div class="details-grid">
+                        <div class="detail-box">
+                            <small>Payment Terms</small>
+                            <strong>${escapeHTML(offer.paymentTerms || 'Standard Payment Terms')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Shipping & Handling</small>
+                            <strong style="color: #16852d;">Free Doorstep Delivery</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Tax Invoice</small>
+                            <strong>GST Invoice Provided</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Escrow Protection</small>
+                            <strong>ReverseMarket Secure Guarantee</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: DEALER REMARKS -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>03</span>
+                        Dealer Proposal Remarks
+                    </h2>
+
+                    <div class="message-box">
+                        ${escapeHTML(offer.message || 'No additional remarks provided by dealer.')}
+                    </div>
+                </section>
+
+                <!-- FORM ACTIONS -->
+                <div class="form-actions">
+                    <a href="offers.html" class="cancel-button">
+                        Back to Offers
+                    </a>
+
+                    <button class="compare-button" onclick="addToCompare('${offer.id}')">
+                        + Add to Comparison
+                    </button>
+
+                    <button class="submit-button" onclick="confirmSelectDealer()">
+                        Select This Dealer & Checkout →
+                    </button>
+                </div>
+
+            </div>
+        `;
+    }
+
+    function addToCompare(offerId) {
+        let selectedForCompare = JSON.parse(localStorage.getItem("compareOffers") || "[]");
+        if (!selectedForCompare.includes(String(offerId))) {
+            selectedForCompare.push(String(offerId));
+            localStorage.setItem("compareOffers", JSON.stringify(selectedForCompare));
+        }
+        alert("Offer added to comparison list!");
+        window.location.href = "compare.html";
+    }
+
+    function confirmSelectDealer() {
+        if (!offer) return;
+        localStorage.setItem("selectedOffer", JSON.stringify(offer));
+        window.location.href = "cart-checkout.html";
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

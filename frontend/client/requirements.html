@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Requirements - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* =========================
+           PAGE & BASE
+        ========================= */
+        .requirement-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .requirement-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .post-new-btn {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .post-new-btn:hover {
+            background: #b20710;
+        }
+
+        /* =========================
+           FILTERS & CONTROLS
+        ========================= */
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #444;
+            transition: 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: #e5e5e5;
+        }
+
+        .filter-tab.active {
+            background: #0b0b0b;
+            color: white;
+            border-color: #0b0b0b;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        /* =========================
+           REQUIREMENT CARDS
+        ========================= */
+        .requirements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .requirement-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .requirement-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        }
+
+        .requirement-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 14px;
+        }
+
+        .requirement-top h3 {
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 5px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #555;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-badge.open {
+            background: #e9f8ed;
+            color: #16852d;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-badge.offers {
+            background: #eef2ff;
+            color: #3b5bdb;
+            border: 1px solid #d0dbfc;
+        }
+
+        .status-badge.closed {
+            background: #f1f3f5;
+            color: #868e96;
+            border: 1px solid #dee2e6;
+        }
+
+        .requirement-desc {
+            color: #555;
+            line-height: 1.55;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 18px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            font-size: 14px;
+            color: #111;
+            word-break: break-word;
+        }
+
+        .budget-highlight {
+            color: #e50914 !important;
+            font-size: 15px !important;
+        }
+
+        .requirement-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .posted-date {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-view-offers {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 4px;
+            padding: 9px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-view-offers:hover {
+            background: #b20710;
+        }
+
+        .btn-delete-req {
+            background: transparent;
+            color: #666;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-delete-req:hover {
+            border-color: #e50914;
+            color: #e50914;
+            background: #fff5f5;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 768px) {
+            .client-header {
+                padding: 10px 15px;
+            }
+
+            .header-user {
+                display: none;
+            }
+
+            .requirement-main {
+                padding: 25px 15px;
+            }
+
+            .heading-text h1 {
+                font-size: 24px;
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .requirement-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="requirement-page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html" class="active">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="requirement-main">
+
+        <div class="page-heading">
+            <div class="heading-text">
+                <h1>My Requirements</h1>
+                <p>Track your posted requirements and review responses from dealers.</p>
+            </div>
+
+            <a href="post-requirement.html" class="post-new-btn">
+                + Post New Requirement
+            </a>
+        </div>
+
+        <!-- Controls: Filters & Search -->
+        <div class="controls-card">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterRequirements('all', this)">All (<span id="countAll">0</span>)</button>
+                <button class="filter-tab" onclick="filterRequirements('open', this)">Open (<span id="countOpen">0</span>)</button>
+                <button class="filter-tab" onclick="filterRequirements('offers', this)">With Offers (<span id="countOffers">0</span>)</button>
+                <button class="filter-tab" onclick="filterRequirements('closed', this)">Closed (<span id="countClosed">0</span>)</button>
+            </div>
+
+            <div class="search-input-wrapper">
+                <input type="text" id="searchInput" placeholder="Search requirements..." oninput="handleSearch()">
+            </div>
+        </div>
+
+        <!-- Requirements List -->
+        <div id="requirementsList" class="requirements-list"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">📋</div>
+            <h2>No Requirements Found</h2>
+            <p>You haven't posted any requirements yet, or no requirements match your filter.</p>
+            <a href="post-requirement.html" class="post-new-btn">
+                Post a Requirement Now
+            </a>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    let requirements = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        await initializeRequirements();
+    });
+
+    async function initializeRequirements() {
+        try {
+            requirements = await ClientModule.getMyRequirements();
+        } catch (error) {
+            console.error("Error loading requirements:", error);
+            requirements = [];
+        }
+
+        updateCounters();
+        renderRequirements();
+    }
+
+    function updateCounters() {
+        const countAll = requirements.length;
+        const countOpen = requirements.filter(r => r.status === 'open').length;
+        const countOffers = requirements.filter(r => (r.offersCount || 0) > 0 || r.status === 'offers').length;
+        const countClosed = requirements.filter(r => r.status === 'closed' || r.status === 'completed').length;
+
+        document.getElementById("countAll").textContent = countAll;
+        document.getElementById("countOpen").textContent = countOpen;
+        document.getElementById("countOffers").textContent = countOffers;
+        document.getElementById("countClosed").textContent = countClosed;
+    }
+
+    function filterRequirements(filter, element) {
+        currentFilter = filter;
+        document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+        if (element) element.classList.add("active");
+        renderRequirements();
+    }
+
+    function handleSearch() {
+        searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+        renderRequirements();
+    }
+
+    function renderRequirements() {
+        const container = document.getElementById("requirementsList");
+        const emptyState = document.getElementById("emptyState");
+
+        let filtered = requirements.filter(req => {
+            if (currentFilter === 'open' && req.status !== 'open') return false;
+            if (currentFilter === 'offers' && (req.offersCount || 0) === 0 && req.status !== 'offers') return false;
+            if (currentFilter === 'closed' && req.status !== 'closed' && req.status !== 'completed') return false;
+
+            if (searchQuery) {
+                const titleMatch = (req.title || '').toLowerCase().includes(searchQuery);
+                const descMatch = (req.description || '').toLowerCase().includes(searchQuery);
+                const categoryMatch = (req.category || '').toLowerCase().includes(searchQuery);
+                const cityMatch = (req.city || '').toLowerCase().includes(searchQuery);
+                if (!titleMatch && !descMatch && !categoryMatch && !cityMatch) return false;
+            }
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = "";
+            emptyState.style.display = "block";
+            return;
+        }
+
+        emptyState.style.display = "none";
+
+        container.innerHTML = filtered.map(req => {
+            const offers = req.offersCount || ((req.status === 'open' || req.status === 'offers') ? 2 : 0);
+            const statusClass = req.status === 'closed' || req.status === 'completed' 
+                ? 'closed' 
+                : (offers > 0 ? 'offers' : 'open');
+            const statusLabel = req.status === 'closed' || req.status === 'completed'
+                ? 'Closed'
+                : (offers > 0 ? `${offers} Offers Received` : 'Open for Offers');
+
+            const formattedBudget = req.budget ? `₹${Number(req.budget).toLocaleString('en-IN')}` : 'Flexible';
+            const formattedDate = req.createdAt ? new Date(req.createdAt).toLocaleDateString('en-IN', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            }) : 'Recently';
+
+            return `
+                <div class="requirement-card">
+                    <div class="requirement-top">
+                        <div>
+                            <h3>${escapeHTML(req.title)}</h3>
+                            <span class="category-tag">${escapeHTML(req.category || 'General')}</span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusLabel}</span>
+                    </div>
+
+                    <p class="requirement-desc">${escapeHTML(req.description || 'No description provided.')}</p>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <small>Quantity</small>
+                            <strong>${escapeHTML(req.quantity || '1')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Max Budget</small>
+                            <strong class="budget-highlight">${formattedBudget}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Location</small>
+                            <strong>${escapeHTML(req.city || 'Any City')}, ${escapeHTML(req.state || '')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Required By</small>
+                            <strong>${escapeHTML(req.deadline || 'Flexible')}</strong>
+                        </div>
+                    </div>
+
+                    <div class="requirement-footer">
+                        <span class="posted-date">Posted on ${formattedDate}</span>
+                        <div class="card-actions">
+                            <button class="btn-delete-req" onclick="toggleCloseRequirement(${req.id})">
+                                ${req.status === 'closed' ? 'Reopen' : 'Close'}
+                            </button>
+                            <a href="offers.html?reqId=${req.id}" class="btn-view-offers">
+                                View Offers (${offers}) →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function toggleCloseRequirement(id) {
+        const index = requirements.findIndex(r => r.id === id || String(r.id) === String(id));
+        if (index !== -1) {
+            requirements[index].status = requirements[index].status === 'closed' ? 'open' : 'closed';
+            localStorage.setItem("requirements", JSON.stringify(requirements));
+            updateCounters();
+            renderRequirements();
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

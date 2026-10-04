@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* =========================
+           PAGE & BASE
+        ========================= */
+        .orders-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .orders-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           CONTROLS CARD
+        ========================= */
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #444;
+            transition: 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: #e5e5e5;
+        }
+
+        .filter-tab.active {
+            background: #0b0b0b;
+            color: white;
+            border-color: #0b0b0b;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        /* =========================
+           ORDER CARDS (POST-REQUIREMENT STYLE)
+        ========================= */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+        }
+
+        .order-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-id-group h3 {
+            font-size: 18px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-badge.confirmed {
+            background: #e9f8ed;
+            color: #16852d;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-badge.in-transit {
+            background: #e7f5ff;
+            color: #1c7ed6;
+            border: 1px solid #d0ebff;
+        }
+
+        .status-badge.delivered {
+            background: #edfff1;
+            color: #16852d;
+            border: 1px solid #b7efc5;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            font-size: 14px;
+            color: #111;
+            word-break: break-word;
+        }
+
+        .badge-verified {
+            background: #e7f5ff;
+            color: #1c7ed6;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 4px;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .order-total-box {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .order-total-box small {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .order-total-box strong {
+            font-size: 24px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-track {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 4px;
+            padding: 9px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-track:hover {
+            background: #b20710;
+        }
+
+        .btn-contact {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-contact:hover {
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .post-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 24px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .post-button:hover {
+            background: #b20710;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 768px) {
+            .client-header {
+                padding: 10px 15px;
+            }
+
+            .header-user {
+                display: none;
+            }
+
+            .orders-main {
+                padding: 25px 15px;
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .order-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .action-buttons {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="orders-page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html" class="active">My Orders</a>
+    </nav>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="orders-main">
+
+        <div class="page-heading">
+            <h1>My Orders</h1>
+            <p>Track delivery status, review order receipts, and manage dealer contracts.</p>
+        </div>
+
+        <!-- Controls: Filters & Search -->
+        <div class="controls-card">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterOrders('all', this)">All Orders (<span id="countAll">0</span>)</button>
+                <button class="filter-tab" onclick="filterOrders('Confirmed', this)">Confirmed (<span id="countConfirmed">0</span>)</button>
+                <button class="filter-tab" onclick="filterOrders('In Transit', this)">In Transit (<span id="countTransit">0</span>)</button>
+                <button class="filter-tab" onclick="filterOrders('Delivered', this)">Delivered (<span id="countDelivered">0</span>)</button>
+            </div>
+
+            <div class="search-input-wrapper">
+                <input type="text" id="searchInput" placeholder="Search by order ID or item..." oninput="handleSearch()">
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div id="ordersList" class="orders-list"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">📦</div>
+            <h2>No Orders Found</h2>
+            <p>You have not placed any orders yet, or none match your selected filter.</p>
+            <a href="requirements.html" class="post-button">
+                View My Requirements
+            </a>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    let orders = [];
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        await initOrders();
+    });
+
+    async function initOrders() {
+        try {
+            orders = await ClientModule.getMyOrders();
+        } catch (error) {
+            console.error("Error loading orders from API:", error);
+            orders = [];
+        }
+
+        updateCounters();
+        renderOrders();
+    }
+        renderOrders();
+    }
+
+    function updateCounters() {
+        const countAll = orders.length;
+        const countConfirmed = orders.filter(o => o.status === 'Confirmed').length;
+        const countTransit = orders.filter(o => o.status === 'In Transit').length;
+        const countDelivered = orders.filter(o => o.status === 'Delivered').length;
+
+        document.getElementById("countAll").textContent = countAll;
+        document.getElementById("countConfirmed").textContent = countConfirmed;
+        document.getElementById("countTransit").textContent = countTransit;
+        document.getElementById("countDelivered").textContent = countDelivered;
+    }
+
+    function filterOrders(filter, element) {
+        currentFilter = filter;
+        document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+        if (element) element.classList.add("active");
+        renderOrders();
+    }
+
+    function handleSearch() {
+        searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+        renderOrders();
+    }
+
+    function renderOrders() {
+        const container = document.getElementById("ordersList");
+        const emptyState = document.getElementById("emptyState");
+
+        let filtered = orders.filter(order => {
+            if (currentFilter !== 'all' && order.status !== currentFilter) {
+                return false;
+            }
+
+            if (searchQuery) {
+                const idMatch = (order.id || '').toLowerCase().includes(searchQuery);
+                const titleMatch = (order.requirement?.title || '').toLowerCase().includes(searchQuery);
+                const dealerMatch = (order.offer?.dealerName || '').toLowerCase().includes(searchQuery);
+                if (!idMatch && !titleMatch && !dealerMatch) return false;
+            }
+
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = "";
+            emptyState.style.display = "block";
+            return;
+        }
+
+        emptyState.style.display = "none";
+
+        container.innerHTML = filtered.map(order => {
+            const offer = order.offer || {};
+            const requirement = order.requirement || {};
+            const statusClass = (order.status || 'confirmed').toLowerCase().replace(/\s+/g, '-');
+            const formattedDate = order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-IN', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            }) : 'Recently';
+            const formattedAmount = `₹${Number(order.amount || 0).toLocaleString("en-IN")}`;
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-id-group">
+                            <h3>#${escapeHTML(order.id)}</h3>
+                            <span class="order-date">Placed on ${formattedDate}</span>
+                        </div>
+
+                        <span class="status-badge ${statusClass}">
+                            ${escapeHTML(order.status || 'Confirmed')}
+                        </span>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <small>Item & Quantity</small>
+                            <strong>${escapeHTML(requirement.title || 'Requirement')} (${escapeHTML(requirement.quantity || '1')})</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <small>Fulfilling Dealer</small>
+                            <strong>
+                                ${escapeHTML(offer.dealerName || 'Dealer')}
+                                ${offer.verified ? '<span class="badge-verified">✓ Verified</span>' : ''}
+                            </strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <small>Payment Method</small>
+                            <strong>${escapeHTML(order.paymentMethod || 'Paid Online')}</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <small>Destination</small>
+                            <strong>${escapeHTML(order.city || 'Chennai')}, ${escapeHTML(order.state || 'Tamil Nadu')}</strong>
+                        </div>
+                    </div>
+
+                    <div class="order-footer">
+                        <div class="order-total-box">
+                            <small>Total Paid:</small>
+                            <strong>${formattedAmount}</strong>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-contact" onclick="contactDealer('${escapeHTML(offer.dealerName || 'Dealer')}')">
+                                Contact Dealer
+                            </button>
+                            <button class="btn-track" onclick="trackOrder('${order.id}', '${order.status || 'Confirmed'}')">
+                                Track Delivery 🚚
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function trackOrder(orderId, status) {
+        alert(`Order Tracking: #${orderId}\nCurrent Status: ${status}\nEstimated Delivery: Within 3 business days.\nCourier Partner: Express Freight Logistics.`);
+    }
+
+    function contactDealer(dealerName) {
+        alert(`Connecting with ${dealerName} support desk.\nPhone: +91 98765 43210\nEmail: support@${dealerName.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`);
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

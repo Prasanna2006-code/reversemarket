@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Requirement - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .requirement-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .requirement-main {
+            max-width: 950px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 7px;
+            font-weight: 800;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #e50914;
+        }
+
+        .optional-tag {
+            color: #888;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 11px 12px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #111;
+        }
+
+        .form-group input,
+        .form-group select {
+            height: 44px;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        .budget-input {
+            display: flex;
+        }
+
+        .currency {
+            width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eeeeee;
+            border: 1px solid #aaa;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-weight: 700;
+        }
+
+        .budget-input input {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .choice-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .choice {
+            position: relative;
+        }
+
+        .choice input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .choice label {
+            display: block;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .choice label strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .choice label small {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .choice input:checked + label {
+            border-color: #e50914;
+            background: #fff3f3;
+            box-shadow: inset 0 0 0 1px #e50914;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .cancel-button {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cancel-button:hover {
+            background: #f3f3f3;
+        }
+
+        .submit-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #b20710;
+        }
+
+        .form-message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-message.success {
+            background: #edfff1;
+            border: 1px solid #16852d;
+            color: #16852d;
+        }
+
+        .form-message.error {
+            background: #fff1f1;
+            border: 1px solid #e50914;
+            color: #b20710;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: auto;
+            }
+            .choice-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            .cancel-button, .submit-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="requirement-page">
+
+    <!-- Header -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html" class="active">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="requirement-main">
+
+        <div class="page-heading">
+            <h1>Post a Requirement</h1>
+            <p>Tell dealers what you need. Dealers will review and submit competitive offers to compete for your order.</p>
+        </div>
+
+        <div class="form-card">
+            <div id="formMessage" class="form-message"></div>
+
+            <form id="requirementForm">
+
+                <!-- SECTION 01: BASIC DETAILS (Required) -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>01</span> Requirement Information <small style="font-size:13px; font-weight:normal; color:#666; margin-left:10px;">(Required)</small>
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="title">Title / Item Needed <span class="required">*</span></label>
+                            <input type="text" id="title" placeholder="e.g. 10 Dell Business Laptops" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category" onchange="onCategoryChange()" required>
+                                <option value="">Select Category</option>
+                                <option value="computers">Computers & Laptops</option>
+                                <option value="electronics">Electronics & AV</option>
+                                <option value="furniture">Furniture & Office Setup</option>
+                                <option value="vehicle">Vehicles & Fleet</option>
+                                <option value="industrial">Industrial Equipment & Machinery</option>
+                                <option value="services">Maintenance & Professional Services</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity Needed <span class="required">*</span></label>
+                            <input type="text" id="quantity" placeholder="e.g. 10 units" required>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="description">Basic Description <span class="required">*</span></label>
+                            <textarea id="description" placeholder="Briefly describe what you need, quality requirements, packaging or urgency..." required></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: CATEGORY-SPECIFIC DETAILS (Requirement 5: Optional) -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>02</span> Technical Specifications <span class="optional-tag">(All Optional)</span>
+                    </h2>
+                    <p style="font-size:13px; color:#666; margin-bottom:12px;">
+                        Add any specific preferences if you know them (e.g. Processor, RAM, Storage). If unsure, you can leave them blank!
+                    </p>
+
+                    <div id="categorySpecsContainer">
+                        <p style="color:#777; font-size:13px; font-style:italic;">
+                            Select a category above to load relevant technical specification fields.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: BUDGET & DEADLINE (Optional) -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>03</span> Commercials & Timeline <span class="optional-tag">(Optional)</span>
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="budget">Total Target Budget (₹) <span class="optional-tag">(Leave blank if flexible)</span></label>
+                            <div class="budget-input">
+                                <span class="currency">₹</span>
+                                <input type="number" id="budget" min="0" placeholder="e.g. 800000 (Optional)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deadline">Required By Date <span class="optional-tag">(optional)</span></label>
+                            <input type="date" id="deadline">
+                        </div>
+
+                        <div class="form-group full">
+                            <label>Delivery / Service Fulfillment</label>
+                            <div class="choice-grid">
+                                <div class="choice">
+                                    <input type="radio" id="deliv_door" name="fulfillment" value="delivery" checked>
+                                    <label for="deliv_door">
+                                        <strong>Delivery</strong>
+                                        <small>Dealer delivers to your site</small>
+                                    </label>
+                                </div>
+                                <div class="choice">
+                                    <input type="radio" id="deliv_pickup" name="fulfillment" value="pickup">
+                                    <label for="deliv_pickup">
+                                        <strong>Pickup</strong>
+                                        <small>You collect from dealer</small>
+                                    </label>
+                                </div>
+                                <div class="choice">
+                                    <input type="radio" id="deliv_service" name="fulfillment" value="service">
+                                    <label for="deliv_service">
+                                        <strong>On-Site</strong>
+                                        <small>Dealer team visits location</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 04: LOCATION & PREFERENCES -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>04</span> Location & Preferences
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="city">City / Destination <span class="required">*</span></label>
+                            <input type="text" id="city" placeholder="e.g. Chennai" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" value="Tamil Nadu">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pincode">Pincode <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="pincode" maxlength="6" placeholder="e.g. 600032">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Full Address / Landmark <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="address" placeholder="e.g. Guindy Industrial Estate">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="brand">Preferred Brand <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="brand" placeholder="e.g. Dell, HP (Leave blank if open)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="condition">Condition <span class="optional-tag">(optional)</span></label>
+                            <select id="condition">
+                                <option value="">Any Condition</option>
+                                <option value="New">Brand New Only</option>
+                                <option value="Refurbished">Refurbished Acceptable</option>
+                                <option value="Used">Used / Surplus Acceptable</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <a href="home.html" class="cancel-button">Cancel</a>
+                    <button type="submit" class="submit-button">Post Requirement →</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/categories.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        // Min date = today
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("deadline").min = today;
+    });
+
+    function onCategoryChange() {
+        const cat = document.getElementById("category").value;
+        const container = document.getElementById("categorySpecsContainer");
+        renderCategorySpecs(cat, container);
+    }
+
+    document.getElementById("requirementForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const msg = document.getElementById("formMessage");
+        msg.style.display = "none";
+
+        const specsContainer = document.getElementById("categorySpecsContainer");
+        const specifications = collectCategorySpecs(specsContainer);
+
+        const budgetVal = document.getElementById("budget").value;
+        const reqData = {
+            title: document.getElementById("title").value.trim(),
+            category: document.getElementById("category").value,
+            quantity: document.getElementById("quantity").value.trim(),
+            description: document.getElementById("description").value.trim(),
+            budget: budgetVal ? Number(budgetVal) : null,  // Optional budget
+            deadline: document.getElementById("deadline").value || null,
+            fulfillment: document.querySelector('input[name="fulfillment"]:checked').value,
+            city: document.getElementById("city").value.trim(),
+            state: document.getElementById("state").value.trim() || "Tamil Nadu",
+            pincode: document.getElementById("pincode").value.trim() || null,
+            address: document.getElementById("address").value.trim() || null,
+            brand: document.getElementById("brand").value.trim() || null,
+            condition: document.getElementById("condition").value || null,
+            specifications: specifications
+        };
+
+        try {
+            await ClientModule.createRequirement(reqData);
+
+            msg.className = "form-message success";
+            msg.textContent = "Requirement posted successfully! Dealers can now review and submit quotes.";
+            msg.style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            setTimeout(() => {
+                window.location.href = "requirements.html";
+            }, 1000);
+
+        } catch (err) {
+            msg.className = "form-message error";
+            msg.textContent = err.message || "Failed to post requirement.";
+            msg.style.display = "block";
+        }
+    });
+</script>
+
+</body>
+</html>

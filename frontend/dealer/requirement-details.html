@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requirement Details - ReverseMarket Dealer</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 950px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            color: #e50914;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .detail-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+
+        .detail-box small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .detail-box strong {
+            font-size: 15px;
+            color: #111;
+            display: block;
+            word-break: break-word;
+        }
+
+        .budget-highlight {
+            color: #e50914 !important;
+            font-size: 18px !important;
+        }
+
+        .desc-box {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-left: 4px solid #e50914;
+            border-radius: 0 6px 6px 0;
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 14px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .cancel-btn {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background: #f3f3f3;
+        }
+
+        .submit-btn {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 28px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-block;
+        }
+
+        .submit-btn:hover {
+            background: #b20710;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            .cancel-btn, .submit-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">TechWorld Electronics</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html" class="active">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="breadcrumb">
+            <a href="requirements.html">Requirements Feed</a>
+            <span>›</span>
+            <span>Requirement Specification</span>
+        </div>
+
+        <div id="contentContainer">
+            <!-- Dynamically populated -->
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqId = urlParams.get("id");
+
+        const requirements = await DealerModule.getMarketplaceRequirements();
+        const req = requirements.find(r => String(r.id) === String(reqId)) || requirements[0];
+
+        renderDetails(req);
+    });
+
+    function renderDetails(req) {
+        const container = document.getElementById("contentContainer");
+        if (!req) {
+            container.innerHTML = `<h2>Requirement not found</h2><a href="requirements.html">Back to feed</a>`;
+            return;
+        }
+
+        const formattedBudget = req.budget ? `₹${Number(req.budget).toLocaleString("en-IN")}` : 'Flexible';
+
+        container.innerHTML = `
+            <div class="page-heading">
+                <div class="heading-text">
+                    <h1>${escapeHTML(req.title)}</h1>
+                    <p>Inquiry ID #${req.id} · Category: ${escapeHTML(req.category || 'General')}</p>
+                </div>
+
+                <a href="submit-offer.html?reqId=${req.id}" class="submit-btn">
+                    Submit Quotation →
+                </a>
+            </div>
+
+            <div class="form-card">
+
+                <!-- SECTION 01: SCOPE -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>01</span> Requirement Scope & Budget
+                    </h2>
+
+                    <div class="details-grid">
+                        <div class="detail-box">
+                            <small>Quantity</small>
+                            <strong>${escapeHTML(req.quantity || '1')} units</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Max Budget</small>
+                            <strong class="budget-highlight">${formattedBudget}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Required By</small>
+                            <strong>${escapeHTML(req.deadline || 'Flexible')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Fulfillment Type</small>
+                            <strong style="text-transform: capitalize;">${escapeHTML(req.fulfillment || 'Delivery')}</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: LOCATION -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>02</span> Delivery Destination
+                    </h2>
+
+                    <div class="details-grid">
+                        <div class="detail-box">
+                            <small>City</small>
+                            <strong>${escapeHTML(req.city || 'Chennai')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>State</small>
+                            <strong>${escapeHTML(req.state || 'Tamil Nadu')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Pincode</small>
+                            <strong>${escapeHTML(req.pincode || '600001')}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <small>Area / Locality</small>
+                            <strong>${escapeHTML(req.address || 'Industrial Area')}</strong>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: SPECIFICATIONS -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>03</span> Client Specifications & Notes
+                    </h2>
+
+                    <div class="desc-box">
+                        ${escapeHTML(req.description || 'No detailed specifications provided.')}
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <a href="requirements.html" class="cancel-btn">Back to Feed</a>
+                    <a href="submit-offer.html?reqId=${req.id}" class="submit-btn">Prepare & Submit Quotation →</a>
+                </div>
+
+            </div>
+        `;
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

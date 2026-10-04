@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Offers - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .offers-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+            padding-bottom: 80px;
+        }
+
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .offers-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .btn-top3-compare {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 20px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25);
+        }
+
+        .btn-top3-compare:hover {
+            background: #b20710;
+        }
+
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .controls-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #444;
+        }
+
+        .controls-group select {
+            height: 38px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 0 12px;
+            font-size: 13px;
+            outline: none;
+            background: white;
+            color: #222;
+        }
+
+        /* OFFERS LIST */
+        .offers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .offer-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .offer-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        }
+
+        /* Requirement 9: Top 3 Special Highlighting */
+        .offer-card.top-1 {
+            border: 2px solid #e50914;
+            background: linear-gradient(180deg, #fff9f9 0%, #ffffff 100px);
+            box-shadow: 0 4px 16px rgba(229, 9, 20, 0.12);
+        }
+
+        .offer-card.top-2 {
+            border: 2px solid #2b8a3e;
+            background: linear-gradient(180deg, #f9fff9 0%, #ffffff 100px);
+        }
+
+        .offer-card.top-3 {
+            border: 2px solid #1c7ed6;
+            background: linear-gradient(180deg, #f9fcff 0%, #ffffff 100px);
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .rank-badge.top-1 {
+            background: #ffe3e3;
+            color: #c92a2a;
+            border: 1px solid #ffc9c9;
+        }
+
+        .rank-badge.top-2 {
+            background: #ebfbee;
+            color: #2b8a3e;
+            border: 1px solid #d3f9d8;
+        }
+
+        .rank-badge.top-3 {
+            background: #e7f5ff;
+            color: #1c7ed6;
+            border: 1px solid #d0ebff;
+        }
+
+        .rank-badge.normal {
+            background: #f1f3f5;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .ai-score-pill {
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: #0b0b0b;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        .ai-score-pill span {
+            color: #e50914;
+        }
+
+        .offer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .dealer-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dealer-title-row h3 {
+            font-size: 20px;
+            color: #111;
+        }
+
+        .badge-verified {
+            background: #e7f5ff;
+            color: #1c7ed6;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            border: 1px solid #d0ebff;
+        }
+
+        .price-section {
+            text-align: right;
+        }
+
+        .price-amount {
+            font-size: 26px;
+            font-weight: 800;
+            color: #e50914;
+            display: block;
+        }
+
+        .price-label {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .product-link-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 14px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            font-size: 14px;
+            color: #111;
+        }
+
+        .dealer-message {
+            background: #fdfdfd;
+            border-left: 3px solid #e50914;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .offer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .compare-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .compare-checkbox-label input {
+            width: 17px;
+            height: 17px;
+            accent-color: #e50914;
+        }
+
+        .btn-select-dealer {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 10px 24px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-select-dealer:hover {
+            background: #b20710;
+        }
+
+        .compare-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b0b0b;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border: 1px solid #333;
+        }
+
+        .compare-bar-btn {
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .offer-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-select-dealer {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="offers-page">
+
+    <!-- Header -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="offers-main">
+
+        <div class="page-heading">
+            <div class="heading-text">
+                <h1>Dealer Offers & AI Ranking</h1>
+                <p>Neural network AI evaluates all quotes based on specs match, budget fit, delivery timeline, and dealer trust.</p>
+            </div>
+
+            <a id="btnTop3Compare" href="compare.html" class="btn-top3-compare" style="display:none;">
+                ⚡ Compare Top 3 Matches →
+            </a>
+        </div>
+
+        <div class="controls-card">
+            <div class="controls-group">
+                <label for="reqFilter">Requirement:</label>
+                <select id="reqFilter" onchange="handleFilterChange()">
+                    <option value="">Loading requirements...</option>
+                </select>
+            </div>
+
+            <div class="controls-group">
+                <span id="offersCountBadge" style="font-size:13px; font-weight:700; color:#444;">0 Offers</span>
+            </div>
+        </div>
+
+        <!-- Offers List -->
+        <div id="offersList" class="offers-list"></div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <div style="font-size:42px; margin-bottom:12px;">🏷️</div>
+            <h2>No Offers Received Yet</h2>
+            <p>Dealers haven't submitted quotes for this requirement yet. Check back soon!</p>
+            <a href="post-requirement.html" class="btn-select-dealer" style="display:inline-block; margin-top:10px;">Post Another Requirement</a>
+        </div>
+
+    </main>
+
+    <!-- Floating Compare Bar -->
+    <div id="compareBar" class="compare-bar" style="display: none;">
+        <span id="compareCountText" style="font-size:14px; font-weight:600;">0 offers selected</span>
+        <button class="compare-bar-btn" onclick="goToCompare()">Compare Selected →</button>
+        <button onclick="clearCompareSelection()" style="background:transparent; color:#aaa; border:none; cursor:pointer;">Clear</button>
+    </div>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    let requirements = [];
+    let rankedOffers = [];
+    let selectedForCompare = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        try {
+            selectedForCompare = JSON.parse(localStorage.getItem("compareOffers") || "[]");
+        } catch (e) {
+            selectedForCompare = [];
+        }
+
+        await loadRequirements();
+    });
+
+    async function loadRequirements() {
+        try {
+            requirements = await ClientModule.getMyRequirements();
+            const select = document.getElementById("reqFilter");
+            select.innerHTML = "";
+
+            if (requirements.length === 0) {
+                select.innerHTML = `<option value="">No requirements posted</option>`;
+                document.getElementById("emptyState").style.display = "block";
+                return;
+            }
+
+            requirements.forEach(r => {
+                const opt = document.createElement("option");
+                opt.value = String(r.id);
+                opt.textContent = `${r.title} (Qty: ${r.quantity || 1})`;
+                select.appendChild(opt);
+            });
+
+            // Check URL param or pick first
+            const urlParams = new URLSearchParams(window.location.search);
+            const reqIdParam = urlParams.get("reqId");
+            if (reqIdParam && requirements.some(r => String(r.id) === String(reqIdParam))) {
+                select.value = reqIdParam;
+            } else {
+                select.value = String(requirements[0].id);
+            }
+
+            await loadOffersForSelectedReq();
+
+        } catch (err) {
+            console.error("Error loading requirements:", err);
+        }
+    }
+
+    async function handleFilterChange() {
+        await loadOffersForSelectedReq();
+    }
+
+    async function loadOffersForSelectedReq() {
+        const reqId = document.getElementById("reqFilter").value;
+        const container = document.getElementById("offersList");
+        const emptyState = document.getElementById("emptyState");
+        const top3Btn = document.getElementById("btnTop3Compare");
+
+        if (!reqId) {
+            container.innerHTML = "";
+            emptyState.style.display = "block";
+            top3Btn.style.display = "none";
+            return;
+        }
+
+        container.innerHTML = `<p style="padding:20px; color:#666;">Evaluating quotes with AI Neural Network...</p>`;
+
+        try {
+            const data = await ClientModule.getRankedOffers(reqId);
+            rankedOffers = data.all_offers || [];
+
+            document.getElementById("offersCountBadge").textContent = `${rankedOffers.length} Quoted Offer${rankedOffers.length === 1 ? '' : 's'}`;
+
+            if (rankedOffers.length === 0) {
+                container.innerHTML = "";
+                emptyState.style.display = "block";
+                top3Btn.style.display = "none";
+                return;
+            }
+
+            emptyState.style.display = "none";
+
+            // If >= 2 offers, enable top 3 compare button
+            if (rankedOffers.length >= 2) {
+                top3Btn.style.display = "inline-flex";
+                top3Btn.href = `compare.html?reqId=${reqId}&top3=true`;
+            } else {
+                top3Btn.style.display = "none";
+            }
+
+            renderRankedOffers();
+            updateCompareBar();
+
+        } catch (err) {
+            console.error("Failed to fetch ranked offers:", err);
+            container.innerHTML = `<p style="color:#e50914;">Failed to load offers. Please try again.</p>`;
+        }
+    }
+
+    function renderRankedOffers() {
+        const container = document.getElementById("offersList");
+
+        container.innerHTML = rankedOffers.map(item => {
+            const offer = item.offer;
+            const product = item.product || {};
+            const rank = item.rank;
+            const score = item.match_score;
+            const isTop3 = item.is_top_3;
+
+            let rankClass = "normal";
+            let rankText = `#${rank} Match`;
+            if (rank === 1) { rankClass = "top-1"; rankText = "🏆 #1 AI Top Pick"; }
+            else if (rank === 2) { rankClass = "top-2"; rankText = "🥈 #2 High Match"; }
+            else if (rank === 3) { rankClass = "top-3"; rankText = "🥉 #3 Good Match"; }
+
+            const cardClass = isTop3 ? `offer-card top-${rank}` : "offer-card";
+            const isChecked = selectedForCompare.includes(String(offer.id));
+
+            return `
+                <div class="${cardClass}">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="rank-badge ${rankClass}">
+                            ${rankText}
+                        </span>
+                        <div class="ai-score-pill">
+                            <span>★</span> ${score}% AI Match
+                        </div>
+                    </div>
+
+                    <div class="offer-header">
+                        <div>
+                            <div class="dealer-title-row">
+                                <h3>${escapeHTML(offer.dealer_name)}</h3>
+                                ${offer.verified ? '<span class="badge-verified">✓ Verified Dealer</span>' : ''}
+                            </div>
+                            <div style="font-size:13px; color:#555; margin-top:4px;">
+                                <span style="color:#f59f00;">★ ${offer.rating || 4.8}</span>
+                                <span>(${offer.reviews || 50} dealer reviews)</span>
+                            </div>
+                        </div>
+
+                        <div class="price-section">
+                            <span class="price-amount">₹${Number(offer.price).toLocaleString("en-IN")}</span>
+                            <span class="price-label">All taxes & fees included</span>
+                        </div>
+                    </div>
+
+                    ${offer.product_title ? `
+                        <div class="product-link-info">
+                            <div>
+                                <strong>Offered Product:</strong> ${escapeHTML(offer.product_title)} 
+                                ${offer.product_brand ? `<span style="color:#666;">(${escapeHTML(offer.product_brand)})</span>` : ''}
+                            </div>
+                            ${product.stock ? `<span style="color:#16852d; font-weight:700;">Stock: ${product.stock} units</span>` : ''}
+                        </div>
+                    ` : ''}
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <small>Delivery Timeline</small>
+                            <strong>${offer.delivery_days} Days</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Warranty</small>
+                            <strong>${escapeHTML(offer.warranty || 'Unavailable')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Condition</small>
+                            <strong>${escapeHTML(offer.condition || 'New')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Payment Terms</small>
+                            <strong>${escapeHTML(offer.payment_terms || 'UPI / Online')}</strong>
+                        </div>
+                    </div>
+
+                    ${offer.message ? `
+                        <div class="dealer-message">
+                            "${escapeHTML(offer.message)}"
+                        </div>
+                    ` : ''}
+
+                    <div class="offer-footer">
+                        <label class="compare-checkbox-label">
+                            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCompare('${offer.id}')">
+                            <span>Select for Comparison</span>
+                        </label>
+
+                        <button class="btn-select-dealer" onclick="selectOfferForOrder(${offer.id})">
+                            Select Dealer & Order →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function toggleCompare(id) {
+        const sId = String(id);
+        if (selectedForCompare.includes(sId)) {
+            selectedForCompare = selectedForCompare.filter(x => x !== sId);
+        } else {
+            selectedForCompare.push(sId);
+        }
+        localStorage.setItem("compareOffers", JSON.stringify(selectedForCompare));
+        updateCompareBar();
+    }
+
+    function updateCompareBar() {
+        const bar = document.getElementById("compareBar");
+        const countText = document.getElementById("compareCountText");
+        if (selectedForCompare.length > 0) {
+            bar.style.display = "flex";
+            countText.textContent = `${selectedForCompare.length} Offer${selectedForCompare.length === 1 ? '' : 's'} Selected`;
+        } else {
+            bar.style.display = "none";
+        }
+    }
+
+    function goToCompare() {
+        window.location.href = "compare.html";
+    }
+
+    function clearCompareSelection() {
+        selectedForCompare = [];
+        localStorage.removeItem("compareOffers");
+        renderRankedOffers();
+        updateCompareBar();
+    }
+
+    function selectOfferForOrder(offerId) {
+        const item = rankedOffers.find(r => r.offer.id === offerId);
+        if (!item) return;
+
+        localStorage.setItem("selectedOffer", JSON.stringify(item.offer));
+        window.location.href = `cart-checkout.html?offerId=${offerId}`;
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

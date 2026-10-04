@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Offer - ReverseMarket Dealer</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 950px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #e50914;
+        }
+
+        .optional-tag {
+            color: #888;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 11px 12px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #111;
+        }
+
+        .form-group input,
+        .form-group select {
+            height: 44px;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        .budget-input {
+            display: flex;
+        }
+
+        .currency {
+            width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eeeeee;
+            border: 1px solid #aaa;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-weight: 700;
+        }
+
+        .budget-input input {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .req-summary-banner {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .product-preview-box {
+            background: #fdfefe;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .product-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .spec-badge {
+            background: #eef2f7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #495057;
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .cancel-button {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .cancel-button:hover {
+            background: #f3f3f3;
+        }
+
+        .submit-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 25px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #b20710;
+        }
+
+        .form-message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-message.success {
+            background: #edfff1;
+            border: 1px solid #16852d;
+            color: #16852d;
+        }
+
+        .form-message.error {
+            background: #fff1f1;
+            border: 1px solid #e50914;
+            color: #b20710;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: auto;
+            }
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            .cancel-button, .submit-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">Dealer</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html">Browse Requirements</a>
+        <a href="submit-offer.html" class="active">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="page-heading">
+            <h1>Submit Competitive Offer</h1>
+            <p>Select a client requirement and link an item from your catalog to generate an instant quote.</p>
+        </div>
+
+        <div class="form-card">
+            <div id="formMessage" class="form-message"></div>
+
+            <form id="offerForm">
+
+                <!-- SECTION 01: REQUIREMENT SELECTION -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>01</span> Target Client Requirement
+                    </h2>
+
+                    <div class="form-group full">
+                        <label for="requirementSelect">Select Requirement to Quote <span class="required">*</span></label>
+                        <select id="requirementSelect" onchange="handleRequirementChange()" required>
+                            <option value="">Select a requirement...</option>
+                        </select>
+                    </div>
+
+                    <div id="reqSummaryBanner" class="req-summary-banner" style="display:none;">
+                        <div>
+                            <strong id="bannerReqTitle" style="font-size:16px; color:#111;">Requirement</strong>
+                            <div style="font-size:13px; color:#666; margin-top:4px;">
+                                Quantity: <span id="bannerReqQty">1</span> · Location: <span id="bannerReqLoc">Chennai</span>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-size:12px; color:#777;">Client's Budget</span>
+                            <div id="bannerReqBudget" style="font-size:20px; font-weight:800; color:#e50914;">Flexible</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: PRODUCT CATALOG LINKAGE (Requirement 4) -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>02</span> Select Existing Product from Catalog <span class="optional-tag">(Auto-populates Details)</span>
+                    </h2>
+
+                    <div class="form-group full">
+                        <label for="productSelect">Select Catalog Product</label>
+                        <select id="productSelect" onchange="handleProductChange()">
+                            <option value="">-- Choose from My Products (or enter custom) --</option>
+                        </select>
+                    </div>
+
+                    <div id="productPreviewBox" class="product-preview-box">
+                        <div class="product-preview-header">
+                            <div>
+                                <strong id="prevProdTitle" style="font-size:15px; color:#111;">Product Title</strong>
+                                <span id="prevProdBrand" class="badge-brand" style="margin-left:8px;">Brand</span>
+                            </div>
+                            <span id="prevProdStock" style="font-size:12px; font-weight:700; color:#16852d;">In Stock: 10</span>
+                        </div>
+                        <div id="prevProdSpecs" style="margin-top:6px;"></div>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: QUOTED PRICING & FULFILLMENT -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>03</span> Quoted Price & Fulfillment
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="price">Total Quoted Offer Price (₹) <span class="required">*</span></label>
+                            <div class="budget-input">
+                                <span class="currency">₹</span>
+                                <input type="number" id="price" min="1" placeholder="e.g. 62000" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deliveryDays">Delivery Timeline (Days) <span class="required">*</span></label>
+                            <input type="number" id="deliveryDays" min="1" max="90" placeholder="e.g. 4" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="condition">Product Condition <span class="optional-tag">(optional)</span></label>
+                            <select id="condition">
+                                <option value="New">Brand New</option>
+                                <option value="Refurbished">Certified Refurbished</option>
+                                <option value="Surplus">Commercial Surplus / Used</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="warranty">Warranty Coverage <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="warranty" placeholder="e.g. 2 Years Onsite Brand Warranty">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paymentTerms">Payment Terms <span class="optional-tag">(optional)</span></label>
+                            <select id="paymentTerms">
+                                <option value="UPI">UPI Instant</option>
+                                <option value="Pay on Delivery">Pay on Delivery / Inspection</option>
+                                <option value="50% Advance, 50% on Delivery">50% Advance, 50% on Delivery</option>
+                                <option value="Net 30">Net 30 Commercial Credit</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="message">Proposal Pitch / Message to Client <span class="optional-tag">(optional)</span></label>
+                            <textarea id="message" placeholder="Available immediately. Includes free doorstep delivery and accessories..."></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <a href="requirements.html" class="cancel-button">Cancel</a>
+                    <button type="submit" class="submit-button">Publish Quotation →</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    let requirements = [];
+    let products = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        DealerModule.requireDealerAuth();
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+
+        try {
+            [requirements, products] = await Promise.all([
+                DealerModule.getMarketplaceRequirements(),
+                DealerModule.getProducts()
+            ]);
+
+            populateRequirementDropdown();
+            populateProductDropdown();
+        } catch (err) {
+            console.error("Initialization error:", err);
+        }
+    });
+
+    function populateRequirementDropdown() {
+        const select = document.getElementById("requirementSelect");
+        requirements.forEach(r => {
+            const opt = document.createElement("option");
+            opt.value = String(r.id);
+            const budgetLabel = r.budget ? `₹${Number(r.budget).toLocaleString("en-IN")}` : "Flexible";
+            opt.textContent = `${r.title} (Qty: ${r.quantity || 1}, Budget: ${budgetLabel})`;
+            select.appendChild(opt);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqId = urlParams.get("reqId");
+        if (reqId) {
+            select.value = reqId;
+            handleRequirementChange();
+        }
+    }
+
+    function populateProductDropdown() {
+        const select = document.getElementById("productSelect");
+        products.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = String(p.id);
+            opt.textContent = `${p.title} - ₹${Number(p.price || 0).toLocaleString("en-IN")} (Stock: ${p.stock || 0})`;
+            select.appendChild(opt);
+        });
+
+        // Pre-select if URL parameter exists (from products.html "Use for Offer")
+        const urlParams = new URLSearchParams(window.location.search);
+        const prodId = urlParams.get("productId");
+        if (prodId) {
+            select.value = prodId;
+            handleProductChange();
+        }
+    }
+
+    function handleRequirementChange() {
+        const id = document.getElementById("requirementSelect").value;
+        const banner = document.getElementById("reqSummaryBanner");
+
+        const found = requirements.find(r => String(r.id) === String(id));
+        if (found) {
+            banner.style.display = "flex";
+            document.getElementById("bannerReqTitle").textContent = found.title;
+            document.getElementById("bannerReqQty").textContent = found.quantity || "1";
+            document.getElementById("bannerReqLoc").textContent = found.city || "Chennai";
+            document.getElementById("bannerReqBudget").textContent = found.budget ? `₹${Number(found.budget).toLocaleString("en-IN")}` : "Flexible";
+        } else {
+            banner.style.display = "none";
+        }
+    }
+
+    function handleProductChange() {
+        const id = document.getElementById("productSelect").value;
+        const box = document.getElementById("productPreviewBox");
+
+        const prod = products.find(p => String(p.id) === String(id));
+        if (prod) {
+            box.style.display = "block";
+            document.getElementById("prevProdTitle").textContent = prod.title;
+            document.getElementById("prevProdBrand").textContent = prod.brand || prod.category;
+            document.getElementById("prevProdStock").textContent = `In Stock: ${prod.stock || 0} units`;
+
+            // Auto-populate offer fields from product
+            if (prod.price && !document.getElementById("price").value) {
+                document.getElementById("price").value = prod.price;
+            }
+            if (prod.warranty) {
+                document.getElementById("warranty").value = prod.warranty;
+            }
+            if (prod.condition) {
+                document.getElementById("condition").value = prod.condition;
+            }
+
+            // Specs badges
+            const specs = prod.specifications && typeof prod.specifications === "object" ? prod.specifications : {};
+            const specKeys = Object.keys(specs);
+            const specsDiv = document.getElementById("prevProdSpecs");
+            if (specKeys.length > 0) {
+                specsDiv.innerHTML = specKeys.map(k => `
+                    <span class="spec-badge"><strong>${escapeHTML(k)}:</strong> ${escapeHTML(specs[k])}</span>
+                `).join("");
+            } else {
+                specsDiv.innerHTML = "";
+            }
+        } else {
+            box.style.display = "none";
+        }
+    }
+
+    document.getElementById("offerForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const reqId = Number(document.getElementById("requirementSelect").value);
+        const prodIdVal = document.getElementById("productSelect").value;
+        const productId = prodIdVal ? Number(prodIdVal) : null;
+
+        const offer = {
+            requirement_id: reqId,
+            product_id: productId,
+            price: Number(document.getElementById("price").value) || 0,
+            delivery_days: Number(document.getElementById("deliveryDays").value) || 5,
+            warranty: document.getElementById("warranty").value.trim() || null,
+            condition: document.getElementById("condition").value || "New",
+            payment_terms: document.getElementById("paymentTerms").value || null,
+            message: document.getElementById("message").value.trim() || null
+        };
+
+        const msg = document.getElementById("formMessage");
+        try {
+            await DealerModule.submitOffer(offer);
+
+            msg.className = "form-message success";
+            msg.textContent = "Your offer was successfully submitted to the client!";
+            msg.style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            setTimeout(() => {
+                window.location.href = "offers.html";
+            }, 1000);
+        } catch (err) {
+            msg.className = "form-message error";
+            msg.textContent = err.message || "Failed to submit offer.";
+            msg.style.display = "block";
+        }
+    });
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

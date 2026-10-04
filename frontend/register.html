@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - ReverseMarket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* =========================
+           REGISTER PAGE
+        ========================= */
+
+        .auth-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+
+            background: #f3f3f3;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .auth-logo {
+            text-align: center;
+
+            font-size: 28px;
+            font-weight: 800;
+
+            color: #0b0b0b;
+
+            margin-bottom: 25px;
+        }
+
+        .auth-logo span {
+            color: #e50914;
+        }
+
+        .auth-card {
+            background: white;
+
+            border: 1px solid #d5d5d5;
+
+            border-radius: 6px;
+
+            padding: 30px;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-card h1 {
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+            color: #111;
+        }
+
+        .auth-subtitle {
+            color: #666;
+
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+
+            color: #111;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            height: 44px;
+
+            padding: 0 12px;
+
+            border: 1px solid #aaa;
+
+            border-radius: 4px;
+
+            background: white;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #e50914;
+
+            box-shadow:
+                0 0 0 2px rgba(229, 9, 20, 0.12);
+        }
+
+        /* =========================
+           ACCOUNT TYPE
+        ========================= */
+
+        .account-types {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+
+            margin-top: 5px;
+        }
+
+        .account-type {
+            position: relative;
+        }
+
+        .account-type input {
+            position: absolute;
+
+            opacity: 0;
+
+            pointer-events: none;
+        }
+
+        .account-type label {
+            display: block;
+
+            padding: 16px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            text-align: center;
+
+            transition: 0.2s;
+        }
+
+        .account-type label strong {
+            display: block;
+
+            font-size: 15px;
+
+            margin-bottom: 5px;
+        }
+
+        .account-type label small {
+            color: #666;
+
+            font-size: 12px;
+        }
+
+        .account-type input:checked + label {
+            border-color: #e50914;
+
+            background: #fff3f3;
+
+            box-shadow:
+                inset 0 0 0 1px #e50914;
+        }
+
+        /* =========================
+           PASSWORD
+        ========================= */
+
+        .password-hint {
+            margin-top: 5px;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .register-button {
+            width: 100%;
+
+            height: 44px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            background: #e50914;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+        .register-button:hover {
+            background: #b20710;
+        }
+
+        /* =========================
+           ERROR / SUCCESS
+        ========================= */
+
+        .message {
+            display: none;
+
+            padding: 10px;
+
+            border-radius: 4px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+        }
+
+        .error-message {
+            background: #fff1f1;
+
+            border: 1px solid #e50914;
+
+            color: #b20710;
+        }
+
+        .success-message {
+            background: #effff2;
+
+            border: 1px solid #16852d;
+
+            color: #16852d;
+        }
+
+        /* =========================
+           LOGIN LINK
+        ========================= */
+
+        .login-text {
+            text-align: center;
+
+            color: #666;
+
+            font-size: 14px;
+
+            margin-top: 22px;
+        }
+
+        .login-link {
+            color: #e50914;
+
+            font-weight: 700;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #333;
+
+            font-size: 14px;
+        }
+
+        .back-home:hover {
+            color: #e50914;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 500px) {
+
+            .auth-page {
+                padding: 25px 15px;
+            }
+
+            .auth-card {
+                padding: 24px 20px;
+            }
+
+            .auth-card h1 {
+                font-size: 24px;
+            }
+
+            .account-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-container">
+
+            <!-- Logo -->
+
+            <div class="auth-logo">
+                Reverse<span>Market</span>
+            </div>
+
+
+            <!-- Register Card -->
+
+            <div class="auth-card">
+
+                <h1>Create account</h1>
+
+                <p class="auth-subtitle">
+                    Join ReverseMarket as a client or dealer
+                </p>
+
+
+                <!-- Messages -->
+
+                <div
+                    id="errorMessage"
+                    class="message error-message"
+                ></div>
+
+                <div
+                    id="successMessage"
+                    class="message success-message"
+                ></div>
+
+
+                <!-- Register Form -->
+
+                <form id="registerForm">
+
+                    <!-- Full Name -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Enter your phone number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Account Type -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Account type
+                        </label>
+
+                        <div class="account-types">
+
+                            <div class="account-type">
+
+                                <input
+                                    type="radio"
+                                    id="client"
+                                    name="accountType"
+                                    value="client"
+                                    checked
+                                >
+
+                                <label for="client">
+
+                                    <strong>Client</strong>
+
+                                    <small>
+                                        Post requirements and buy
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="account-type">
+
+                                <input
+                                    type="radio"
+                                    id="dealer"
+                                    name="accountType"
+                                    value="dealer"
+                                >
+
+                                <label for="dealer">
+
+                                    <strong>Dealer</strong>
+
+                                    <small>
+                                        Find requirements and offer
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <div class="password-hint">
+                            Use at least 6 characters.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Confirm Password -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Re-enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Submit -->
+
+                    <button
+                        type="submit"
+                        class="register-button"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <!-- Login -->
+
+                <div class="login-text">
+
+                    Already have an account?
+
+                    <a
+                        href="login.html"
+                        class="login-link"
+                    >
+                        Sign in
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Back -->
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Scripts: api.js must come first (auth.js calls apiRequest) -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products Catalog - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .add-product-btn {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .add-product-btn:hover {
+            background: #b20710;
+        }
+
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .product-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .product-title-group h3 {
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 5px;
+        }
+
+        .badge-brand {
+            background: #f1f3f5;
+            color: #495057;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .product-desc {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        /* Specifications chips */
+        .specs-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .spec-chip {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 3px 9px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .spec-chip strong {
+            color: #111;
+            text-transform: capitalize;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-top: 14px;
+            border-top: 1px solid #eee;
+        }
+
+        .stock-badge {
+            background: #e9f8ed;
+            color: #16852d;
+            border: 1px solid #c3e6cb;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-use-offer {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-use-offer:hover {
+            background: #b20710;
+        }
+
+        .btn-edit {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 7px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-edit:hover {
+            background: #f3f3f3;
+        }
+
+        .btn-delete {
+            background: transparent;
+            color: #888;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 7px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            color: #e50914;
+            border-color: #e50914;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 6px;
+            max-width: 500px;
+            width: 100%;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">Dealer</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html" class="active">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="page-heading">
+            <div class="heading-text">
+                <h1>My Products Catalog</h1>
+                <p>Create products once and reuse them anytime you submit offers to clients.</p>
+            </div>
+
+            <a href="add-product.html" class="add-product-btn">
+                + Add New Product
+            </a>
+        </div>
+
+        <div class="controls-card">
+            <div class="search-input-wrapper">
+                <input type="text" id="searchInput" placeholder="Search catalog items..." oninput="handleSearch()">
+            </div>
+            <span id="productCount" style="font-size:13px; color:#666; font-weight:600;">Loading...</span>
+        </div>
+
+        <div id="productsList" class="products-list"></div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <h2>No Catalog Products Yet</h2>
+            <p>Add your standard inventory once to start quoting faster and win more orders.</p>
+            <a href="add-product.html" class="add-product-btn" style="margin-top:15px;">+ Add Your First Product</a>
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Quick Edit Modal -->
+<div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 style="font-size:20px; margin-bottom:15px;">Edit Product Details</h2>
+        <input type="hidden" id="editProdId">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+                <label style="font-size:12px; font-weight:700;">Price (₹)</label>
+                <input type="number" id="editPrice" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            </div>
+            <div>
+                <label style="font-size:12px; font-weight:700;">In-Stock Quantity</label>
+                <input type="number" id="editStock" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            </div>
+            <div>
+                <label style="font-size:12px; font-weight:700;">Warranty</label>
+                <input type="text" id="editWarranty" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:15px;">
+                <button onclick="closeEditModal()" class="btn-edit">Cancel</button>
+                <button onclick="saveEditProduct()" class="btn-use-offer">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    let products = [];
+    let searchQuery = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        DealerModule.requireDealerAuth();
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+
+        await loadProducts();
+    });
+
+    async function loadProducts() {
+        try {
+            products = await DealerModule.getProducts();
+            renderProducts();
+        } catch (err) {
+            console.error("Failed to load products:", err);
+            document.getElementById("productCount").textContent = "Error loading products";
+        }
+    }
+
+    function handleSearch() {
+        searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+        renderProducts();
+    }
+
+    function renderProducts() {
+        const container = document.getElementById("productsList");
+        const emptyState = document.getElementById("emptyState");
+
+        const filtered = products.filter(p => {
+            if (!searchQuery) return true;
+            return (p.title || '').toLowerCase().includes(searchQuery) ||
+                   (p.brand || '').toLowerCase().includes(searchQuery) ||
+                   (p.category || '').toLowerCase().includes(searchQuery);
+        });
+
+        document.getElementById("productCount").textContent = `${filtered.length} Product${filtered.length === 1 ? '' : 's'}`;
+
+        if (filtered.length === 0) {
+            container.innerHTML = "";
+            emptyState.style.display = "block";
+            return;
+        }
+
+        emptyState.style.display = "none";
+
+        container.innerHTML = filtered.map(p => {
+            const specs = p.specifications && typeof p.specifications === "object" ? p.specifications : {};
+            const specKeys = Object.keys(specs);
+
+            return `
+                <div class="product-card">
+                    <div class="product-top">
+                        <div class="product-title-group">
+                            <h3>${escapeHTML(p.title)}</h3>
+                            <span class="badge-brand">${escapeHTML(p.brand || 'Generic')} · ${escapeHTML(p.category || 'General')}</span>
+                        </div>
+                        <div class="product-price">
+                            ₹${Number(p.price || 0).toLocaleString("en-IN")}
+                        </div>
+                    </div>
+
+                    ${p.description ? `<p class="product-desc">${escapeHTML(p.description)}</p>` : ''}
+
+                    ${specKeys.length > 0 ? `
+                        <div class="specs-chips">
+                            ${specKeys.map(k => `
+                                <div class="spec-chip">
+                                    <strong>${escapeHTML(k.replace(/_/g, ' '))}:</strong> ${escapeHTML(specs[k])}
+                                </div>
+                            `).join("")}
+                        </div>
+                    ` : ''}
+
+                    <div class="product-footer">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="stock-badge">In Stock: ${p.stock || 0} units</span>
+                            <span style="font-size:12px; color:#666;">Warranty: ${escapeHTML(p.warranty || 'Unavailable')}</span>
+                            <span style="font-size:12px; color:#666;">Condition: ${escapeHTML(p.condition || 'New')}</span>
+                        </div>
+
+                        <!-- Requirement 3: [Edit] [Delete] [Use for Offer] -->
+                        <div class="action-group">
+                            <button class="btn-edit" onclick="openEditModal(${p.id})">Edit</button>
+                            <button class="btn-delete" onclick="handleDelete(${p.id})">Delete</button>
+                            <a href="submit-offer.html?productId=${p.id}" class="btn-use-offer">
+                                Use for Offer →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    async function handleDelete(id) {
+        if (!confirm("Are you sure you want to delete this product from your catalog?")) return;
+        try {
+            await DealerModule.deleteProduct(id);
+            products = products.filter(p => p.id !== id);
+            renderProducts();
+        } catch (err) {
+            alert(err.message || "Failed to delete product");
+        }
+    }
+
+    function openEditModal(id) {
+        const prod = products.find(p => p.id === id);
+        if (!prod) return;
+        document.getElementById("editProdId").value = prod.id;
+        document.getElementById("editPrice").value = prod.price || 0;
+        document.getElementById("editStock").value = prod.stock || 0;
+        document.getElementById("editWarranty").value = prod.warranty || "";
+        document.getElementById("editModal").style.display = "flex";
+    }
+
+    function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+    }
+
+    async function saveEditProduct() {
+        const id = Number(document.getElementById("editProdId").value);
+        const price = Number(document.getElementById("editPrice").value);
+        const stock = Number(document.getElementById("editStock").value);
+        const warranty = document.getElementById("editWarranty").value.trim();
+
+        try {
+            const updated = await DealerModule.updateProduct(id, { price, stock, warranty });
+            const idx = products.findIndex(p => p.id === id);
+            if (idx !== -1) {
+                products[idx] = updated;
+            }
+            closeEditModal();
+            renderProducts();
+        } catch (err) {
+            alert(err.message || "Failed to update product");
+        }
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

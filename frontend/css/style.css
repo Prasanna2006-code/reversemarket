@@ -1,0 +1,908 @@
+/* =========================
+   RESET & BASE
+========================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --black: #0b0b0b;
+    --black-light: #151515;
+    --black-secondary: #202020;
+
+    --red: #e50914;
+    --red-dark: #b20710;
+    --red-light: #ff1f2d;
+
+    --white: #ffffff;
+    --text: #111111;
+    --muted: #666666;
+
+    --background: #f3f3f3;
+    --border: #dddddd;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    font-size: 14px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    min-height: 64px;
+    background: var(--black);
+    color: var(--white);
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 8px 20px;
+
+    border-bottom: 1px solid #292929;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    white-space: nowrap;
+    letter-spacing: -0.5px;
+}
+
+.logo::first-letter {
+    color: var(--red);
+}
+
+
+/* =========================
+   LOCATION
+========================= */
+
+.location {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.location span {
+    font-size: 12px;
+    color: #aaaaaa;
+}
+
+.location strong {
+    font-size: 14px;
+    color: white;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-bar {
+    flex: 1;
+    height: 40px;
+
+    display: flex;
+
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-bar select {
+    width: 75px;
+
+    border: none;
+    border-right: 1px solid #ccc;
+
+    background: #eeeeee;
+    color: #333;
+
+    padding: 0 8px;
+
+    outline: none;
+}
+
+.search-bar input {
+    flex: 1;
+
+    border: none;
+
+    background: white;
+    color: #111;
+
+    padding: 0 14px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.search-bar input:focus {
+    box-shadow: inset 0 0 0 2px var(--red);
+}
+
+.search-bar button {
+    width: 70px;
+
+    border: none;
+
+    background: var(--red);
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.search-bar button:hover {
+    background: var(--red-dark);
+}
+
+
+/* =========================
+   ACCOUNT / ORDERS / CART
+========================= */
+
+.account,
+.orders {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.account span,
+.orders span {
+    font-size: 12px;
+    color: #bbbbbb;
+}
+
+.account strong,
+.orders strong {
+    font-size: 14px;
+    color: white;
+}
+
+.account:hover strong,
+.orders:hover strong {
+    color: var(--red-light);
+}
+
+.cart {
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.cart:hover {
+    color: var(--red-light);
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    min-height: 42px;
+
+    background: var(--black-secondary);
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+
+    padding: 0 20px;
+
+    border-bottom: 2px solid var(--red);
+}
+
+.navbar a {
+    padding: 12px 0;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition: 0.2s;
+}
+
+.navbar a:hover {
+    color: var(--red-light);
+
+    border-bottom: 2px solid var(--red);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+    max-width: 1500px;
+    margin: auto;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 380px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.96),
+            rgba(15, 15, 15, 0.88),
+            rgba(15, 15, 15, 0.65)
+        );
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    padding: 60px 50px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Red glow on right side */
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -100px;
+    top: -100px;
+
+    background: radial-gradient(
+        circle,
+        rgba(229, 9, 20, 0.45),
+        transparent 70%
+    );
+
+    pointer-events: none;
+}
+
+
+.hero-content {
+    max-width: 650px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 44px;
+
+    line-height: 1.12;
+
+    margin-bottom: 18px;
+
+    font-weight: 800;
+}
+
+.hero h1::first-line {
+    color: white;
+}
+
+.hero p {
+    font-size: 18px;
+
+    line-height: 1.5;
+
+    color: #cccccc;
+
+    margin-bottom: 28px;
+}
+
+
+/* =========================
+   PRIMARY BUTTON
+========================= */
+
+.primary-button {
+    background: var(--red);
+
+    color: white;
+
+    border: 1px solid var(--red);
+
+    border-radius: 6px;
+
+    padding: 13px 24px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+.primary-button:hover {
+    background: var(--red-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* =========================
+   COMMON SECTIONS
+========================= */
+
+.categories,
+.how-it-works,
+.recommended {
+    background: white;
+
+    margin: 20px;
+
+    padding: 28px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 4px;
+}
+
+.categories h2,
+.how-it-works h2,
+.recommended h2 {
+    font-size: 24px;
+
+    margin-bottom: 22px;
+
+    color: var(--black);
+}
+
+
+/* Red line below section headings */
+
+.categories h2::after,
+.how-it-works h2::after,
+.recommended h2::after {
+    content: "";
+
+    display: block;
+
+    width: 45px;
+    height: 3px;
+
+    background: var(--red);
+
+    margin-top: 8px;
+}
+
+
+/* =========================
+   CATEGORY CARDS
+========================= */
+
+.category-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 16px;
+}
+
+.category-card {
+    border: 1px solid var(--border);
+
+    padding: 22px;
+
+    min-height: 140px;
+
+    background: white;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Red left border */
+
+.category-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: var(--red);
+
+    transform: scaleY(0);
+
+    transform-origin: bottom;
+
+    transition: 0.2s;
+}
+
+.category-card:hover {
+    border-color: #bbbbbb;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    transform: translateY(-2px);
+}
+
+.category-card:hover::before {
+    transform: scaleY(1);
+}
+
+.category-card h3 {
+    font-size: 18px;
+
+    margin-bottom: 10px;
+
+    color: var(--black);
+}
+
+.category-card p {
+    color: var(--muted);
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.steps {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.step {
+    text-align: center;
+
+    padding: 20px;
+
+    position: relative;
+}
+
+.step span {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 14px;
+
+    background: var(--black);
+
+    color: white;
+
+    border: 3px solid var(--red);
+
+    border-radius: 50%;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+.step h3 {
+    margin-bottom: 8px;
+
+    color: var(--black);
+}
+
+.step p {
+    color: var(--muted);
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   REQUIREMENTS
+========================= */
+
+.requirement-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.requirement-card {
+    border: 1px solid var(--border);
+
+    padding: 20px;
+
+    background: white;
+
+    transition: 0.2s;
+}
+
+.requirement-card:hover {
+    border-color: var(--red);
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    transform: translateY(-2px);
+}
+
+.requirement-card h3 {
+    margin-bottom: 10px;
+
+    color: var(--black);
+}
+
+.requirement-card p {
+    color: var(--muted);
+
+    margin-bottom: 12px;
+
+    line-height: 1.5;
+}
+
+.requirement-card strong {
+    color: #008000;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    background: var(--black);
+
+    color: white;
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+
+    gap: 40px;
+
+    padding: 45px 50px;
+
+    margin-top: 30px;
+
+    border-top: 3px solid var(--red);
+}
+
+.footer h3,
+.footer h4 {
+    margin-bottom: 15px;
+
+    color: white;
+}
+
+.footer p {
+    color: #aaaaaa;
+
+    line-height: 1.6;
+}
+
+.footer a {
+    display: block;
+
+    color: #cccccc;
+
+    margin-bottom: 10px;
+
+    transition: 0.2s;
+}
+
+.footer a:hover {
+    color: var(--red-light);
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   FOOTER LOGO
+========================= */
+
+.footer h3 {
+    font-size: 22px;
+}
+
+.footer h3::first-letter {
+    color: var(--red);
+}
+
+
+/* =========================
+   SELECTION
+========================= */
+
+::selection {
+    background: var(--red);
+
+    color: white;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eeeeee;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333333;
+
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--red);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+    .header {
+        gap: 12px;
+
+        padding: 8px 15px;
+    }
+
+    .location {
+        display: none;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .requirement-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .header {
+        flex-wrap: wrap;
+
+        height: auto;
+    }
+
+    .search-bar {
+        order: 5;
+
+        flex-basis: 100%;
+    }
+
+    .navbar {
+        overflow-x: auto;
+
+        gap: 22px;
+
+        scrollbar-width: none;
+    }
+
+    .navbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hero {
+        padding: 50px 30px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        font-size: 13px;
+    }
+
+    .header {
+        padding: 10px 12px;
+
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .account,
+    .orders {
+        display: none;
+    }
+
+    .cart {
+        margin-left: auto;
+    }
+
+    .search-bar {
+        height: 42px;
+    }
+
+    .search-bar select {
+        width: 65px;
+    }
+
+    .search-bar button {
+        width: 55px;
+    }
+
+    .navbar {
+        padding: 0 14px;
+
+        gap: 20px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+    }
+
+    .hero {
+        min-height: 330px;
+
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .categories,
+    .how-it-works,
+    .recommended {
+        margin: 10px;
+
+        padding: 20px;
+    }
+
+    .categories h2,
+    .how-it-works h2,
+    .recommended h2 {
+        font-size: 21px;
+    }
+
+    .category-grid,
+    .steps,
+    .requirement-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-card {
+        min-height: 120px;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+
+        padding: 35px 25px;
+    }
+}
+
+
+/* =========================
+   EXTRA SMALL DEVICES
+========================= */
+
+@media (max-width: 400px) {
+
+    .hero h1 {
+        font-size: 27px;
+    }
+
+    .hero {
+        padding: 35px 16px;
+    }
+
+    .primary-button {
+        width: 100%;
+    }
+
+    .search-bar select {
+        display: none;
+    }
+}
+

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* =========================
+           PAGE & BASE
+        ========================= */
+        .payment-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .payment-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumb a:hover {
+            color: #e50914;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           LAYOUT GRID
+        ========================= */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* =========================
+           FORM CARD (POST-REQUIREMENT STYLE)
+        ========================= */
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .order-preview-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .order-preview-box h3 {
+            font-size: 18px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .preview-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .address-box {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           PAYMENT METHODS
+        ========================= */
+        .payment-options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .payment-option-card {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .payment-option-card:hover {
+            border-color: #e50914;
+            background: #fffafa;
+        }
+
+        .payment-option-card.selected {
+            border-color: #e50914;
+            background: #fff3f3;
+            box-shadow: inset 0 0 0 1px #e50914;
+        }
+
+        .payment-option-card input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #e50914;
+            cursor: pointer;
+        }
+
+        .payment-icon-badge {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .payment-details strong {
+            display: block;
+            font-size: 15px;
+            color: #111;
+            margin-bottom: 3px;
+        }
+
+        .payment-details small {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* =========================
+           ORDER SUMMARY SIDEBAR
+        ========================= */
+        .summary-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 25px;
+        }
+
+        .summary-card h2 {
+            font-size: 18px;
+            color: #111;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .summary-line strong {
+            color: #111;
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: #eee;
+            margin: 16px 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 22px;
+        }
+
+        .summary-total strong {
+            font-size: 26px;
+            color: #e50914;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 13px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .submit-button:hover {
+            background: #b20710;
+        }
+
+        .cancel-button {
+            width: 100%;
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .cancel-button:hover {
+            background: #f3f3f3;
+        }
+
+        .demo-note-box {
+            background: #fff8e1;
+            border: 1px solid #f0d98c;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            color: #7a6300;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            font-size: 22px;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 850px) {
+            .client-header {
+                padding: 10px 15px;
+            }
+
+            .header-user {
+                display: none;
+            }
+
+            .payment-main {
+                padding: 25px 15px;
+            }
+
+            .payment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="payment-main">
+
+        <div class="breadcrumb">
+            <a href="cart-checkout.html">Checkout</a>
+            <span>›</span>
+            <span>Payment</span>
+        </div>
+
+        <div class="page-heading">
+            <h1>Secure Payment</h1>
+            <p>Select your payment method to finalize the order. Funds are protected by ReverseMarket Escrow.</p>
+        </div>
+
+        <div id="paymentContent">
+            <!-- Dynamically populated -->
+        </div>
+
+    </main>
+
+</div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/client.js"></script>
+    <script>
+    let checkout = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        loadPaymentData();
+    });
+
+    function loadPaymentData() {
+        const savedCheckout = localStorage.getItem("checkoutData");
+
+        if (savedCheckout) {
+            try {
+                checkout = JSON.parse(savedCheckout);
+            } catch (e) {
+                console.error("Error parsing checkout data:", e);
+            }
+        }
+
+        renderPayment();
+    }
+
+    function renderPayment() {
+        const container = document.getElementById("paymentContent");
+
+        if (!checkout) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">💳</div>
+                    <h2>Payment Unavailable</h2>
+                    <p>No checkout session was found. Please select an offer to proceed.</p>
+                    <a href="offers.html" class="submit-button" style="display:inline-block; width:auto; padding:11px 24px;">
+                        Back to Offers
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        const offer = checkout.offer || {};
+        const total = Number(checkout.total) || Number(offer.price) || 0;
+        const formattedTotal = `₹${total.toLocaleString("en-IN")}`;
+
+        container.innerHTML = `
+            <div class="payment-grid">
+
+                <!-- LEFT COLUMN: PAYMENT SECTIONS -->
+                <div>
+                    <div class="form-card">
+
+                        <!-- SECTION 01: ORDER & DESTINATION SUMMARY -->
+                        <section class="form-section">
+                            <h2 class="form-section-title">
+                                <span>01</span>
+                                Order Summary
+                            </h2>
+
+                            <div class="order-preview-box">
+                                <div>
+                                    <h3>${escapeHTML(offer.dealerName || "Verified Dealer")}</h3>
+                                    <small style="color: #666;">
+                                        Item: ${escapeHTML(offer.requirementTitle || checkout.requirement?.title || "Custom Requirement")}
+                                    </small>
+                                </div>
+                                <div class="preview-price">
+                                    ${formattedTotal}
+                                </div>
+                            </div>
+
+                            <div class="address-box">
+                                <strong>Delivery Destination:</strong><br>
+                                ${escapeHTML(checkout.deliveryAddress || "Address")}, ${escapeHTML(checkout.city || "Chennai")}, ${escapeHTML(checkout.state || "Tamil Nadu")} - ${escapeHTML(checkout.pincode || "600001")}
+                            </div>
+                        </section>
+
+                        <!-- SECTION 02: PAYMENT OPTIONS -->
+                        <section class="form-section">
+                            <h2 class="form-section-title">
+                                <span>02</span>
+                                Choose Payment Method
+                            </h2>
+
+                            <div class="payment-options-list">
+                                <label class="payment-option-card selected" onclick="selectPaymentOption(this)">
+                                    <input type="radio" name="paymentMethod" value="UPI" checked>
+                                    <div class="payment-icon-badge">📱</div>
+                                    <div class="payment-details">
+                                        <strong>UPI Instant Transfer</strong>
+                                        <small>Google Pay, PhonePe, Paytm, BHIM or any UPI App</small>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option-card" onclick="selectPaymentOption(this)">
+                                    <input type="radio" name="paymentMethod" value="Credit/Debit Card">
+                                    <div class="payment-icon-badge">💳</div>
+                                    <div class="payment-details">
+                                        <strong>Credit / Debit Card</strong>
+                                        <small>Visa, MasterCard, RuPay, Corporate Commercial Cards</small>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option-card" onclick="selectPaymentOption(this)">
+                                    <input type="radio" name="paymentMethod" value="Net Banking">
+                                    <div class="payment-icon-badge">🏛️</div>
+                                    <div class="payment-details">
+                                        <strong>Net Banking / NEFT</strong>
+                                        <small>HDFC, ICICI, SBI, Axis and 50+ supported major banks</small>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option-card" onclick="selectPaymentOption(this)">
+                                    <input type="radio" name="paymentMethod" value="Cash on Delivery">
+                                    <div class="payment-icon-badge">💵</div>
+                                    <div class="payment-details">
+                                        <strong>Pay on Delivery / Inspection</strong>
+                                        <small>Verify goods with dealer representative before settlement</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: SIDEBAR -->
+                <aside>
+                    <div class="summary-card">
+                        <h2>Order Summary</h2>
+
+                        <div class="summary-line">
+                            <span>Quoted Price</span>
+                            <strong>${formattedTotal}</strong>
+                        </div>
+
+                        <div class="summary-line">
+                            <span>Delivery & Handling</span>
+                            <strong style="color: #16852d;">Free Included</strong>
+                        </div>
+
+                        <div class="summary-line">
+                            <span>Taxes & Duties</span>
+                            <strong>Included</strong>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-total">
+                            <span>Grand Total</span>
+                            <strong>${formattedTotal}</strong>
+                        </div>
+
+                        <button class="submit-button" onclick="completePayment()">
+                            Confirm & Place Order →
+                        </button>
+
+                        <a href="cart-checkout.html" class="cancel-button">
+                            ← Back to Checkout
+                        </a>
+
+                        <div class="demo-note-box">
+                            <strong>Demo Payment Mode:</strong><br>
+                            This is an interactive simulation. No real money will be deducted from your account.
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        `;
+    }
+
+    function selectPaymentOption(element) {
+        document.querySelectorAll(".payment-option-card").forEach(card => card.classList.remove("selected"));
+        element.classList.add("selected");
+        const radio = element.querySelector("input[type='radio']");
+        if (radio) radio.checked = true;
+    }
+
+    async function completePayment() {
+        const selectedRadio = document.querySelector("input[name='paymentMethod']:checked");
+        if (!selectedRadio) {
+            alert("Please select a payment method.");
+            return;
+        }
+
+        const offerId = checkout.offerId || checkout.offer?.id;
+        if (!offerId) {
+            alert("Missing offer information. Please return to offers.");
+            return;
+        }
+
+        const orderPayload = {
+            offer_id: Number(offerId),
+            delivery_address: checkout.deliveryAddress || "Address",
+            city: checkout.city || "Chennai",
+            state: checkout.state || "Tamil Nadu",
+            pincode: checkout.pincode || null,
+            payment_method: selectedRadio.value,
+            quantity: Number(checkout.quantity || 1)
+        };
+
+        try {
+            await ClientModule.placeOrder(orderPayload);
+
+            // Clean checkout session
+            localStorage.removeItem("checkoutData");
+            localStorage.removeItem("selectedOffer");
+
+            alert("Order successfully placed with the dealer! You can now track your delivery.");
+            window.location.href = "orders.html";
+        } catch (err) {
+            alert(err.message || "Failed to place order. Please try again.");
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

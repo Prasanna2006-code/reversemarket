@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - ReverseMarket</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* =========================
+           LOGIN PAGE
+        ========================= */
+
+        .auth-page {
+            min-height: calc(100vh - 106px);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+
+            background: #f3f3f3;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-logo {
+            text-align: center;
+
+            font-size: 28px;
+            font-weight: 800;
+
+            color: #0b0b0b;
+
+            margin-bottom: 25px;
+        }
+
+        .auth-logo span {
+            color: #e50914;
+        }
+
+        .auth-card {
+            background: white;
+
+            border: 1px solid #d5d5d5;
+
+            border-radius: 6px;
+
+            padding: 30px;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-card h1 {
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+            color: #111;
+        }
+
+        .auth-subtitle {
+            color: #666;
+
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-bottom: 7px;
+
+            color: #111;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            height: 44px;
+
+            padding: 0 12px;
+
+            border: 1px solid #aaa;
+
+            border-radius: 4px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #e50914;
+
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.12);
+        }
+
+        .password-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forgot-password {
+            color: #e50914;
+
+            font-size: 13px;
+
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+
+            height: 44px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            background: #e50914;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            background: #b20710;
+        }
+
+        .divider {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 25px 0;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #ddd;
+        }
+
+        .register-text {
+            text-align: center;
+
+            color: #666;
+
+            font-size: 14px;
+        }
+
+        .register-link {
+            display: inline-block;
+
+            margin-top: 10px;
+
+            color: #e50914;
+
+            font-weight: 700;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #333;
+
+            font-size: 14px;
+        }
+
+        .back-home:hover {
+            color: #e50914;
+        }
+
+        .error-message {
+            display: none;
+
+            background: #fff1f1;
+
+            border: 1px solid #e50914;
+
+            color: #b20710;
+
+            padding: 10px;
+
+            border-radius: 4px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 500px) {
+
+            .auth-page {
+                padding: 25px 15px;
+            }
+
+            .auth-card {
+                padding: 24px 20px;
+            }
+
+            .auth-card h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-container">
+
+            <!-- Logo -->
+
+            <div class="auth-logo">
+                Reverse<span>Market</span>
+            </div>
+
+
+            <!-- Login Card -->
+
+            <div class="auth-card">
+
+                <h1>Sign in</h1>
+
+                <p class="auth-subtitle">
+                    Login to your ReverseMarket account
+                </p>
+
+
+                <!-- Error -->
+
+                <div id="errorMessage" class="error-message">
+                    Invalid email or password.
+                </div>
+
+
+                <!-- Login Form -->
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="password-row">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <span class="forgot-password">
+                                Forgot password?
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+
+                <!-- Divider -->
+
+                <div class="divider">
+                    New to ReverseMarket?
+                </div>
+
+
+                <!-- Register -->
+
+                <div class="register-text">
+
+                    Create a new account
+
+                    <br>
+
+                    <a
+                        href="register.html"
+                        class="register-link"
+                    >
+                        Create your ReverseMarket account
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Back -->
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Scripts: api.js must come first (auth.js calls apiRequest) -->
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

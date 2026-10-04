@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Catalog Product - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 950px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 19px;
+            margin-bottom: 18px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #e50914;
+        }
+
+        .optional-tag {
+            color: #888;
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 11px 12px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #111;
+        }
+
+        .form-group input,
+        .form-group select {
+            height: 44px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .cancel-button {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            padding: 11px 22px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .cancel-button:hover {
+            background: #f3f3f3;
+        }
+
+        .submit-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 11px 25px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #b20710;
+        }
+
+        .form-message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-message.success {
+            background: #edfff1;
+            border: 1px solid #16852d;
+            color: #16852d;
+        }
+
+        .form-message.error {
+            background: #fff1f1;
+            border: 1px solid #e50914;
+            color: #b20710;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: auto;
+            }
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            .cancel-button,
+            .submit-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">Dealer</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html" class="active">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="page-heading">
+            <h1>Add Catalog Product</h1>
+            <p>Create your standard products once. You can easily select them to instantly submit quotations.</p>
+        </div>
+
+        <div class="form-card">
+            <div id="formMessage" class="form-message"></div>
+
+            <form id="productForm">
+
+                <!-- SECTION 01: BASIC DETAILS -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>01</span> Basic Product Details
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="title">Product Title <span class="required">*</span></label>
+                            <input type="text" id="title" placeholder="e.g. Dell Latitude 5420 Laptop" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category" onchange="onCategoryChange()" required>
+                                <option value="">Select Category</option>
+                                <option value="computers">Computers & Laptops</option>
+                                <option value="electronics">Electronics & AV</option>
+                                <option value="furniture">Furniture</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="industrial">Industrial Equipment</option>
+                                <option value="services">Service</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="brand">Brand / Manufacturer <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="brand" placeholder="e.g. Dell, HP, Tata, Bosch">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: CATEGORY-SPECIFIC DETAILS (DYNAMIC) -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>02</span> Category-Specific Specifications <span class="optional-tag">(None Compulsory)</span>
+                    </h2>
+                    <p style="font-size:13px; color:#666; margin-bottom:12px;">
+                        Specifications vary by category (e.g. Processor & RAM for Laptops, Mileage for Vehicles, Material for Furniture).
+                    </p>
+
+                    <div id="categorySpecsContainer">
+                        <p style="color:#777; font-size:13px; font-style:italic;">
+                            Select a category above to load category-tailored specification inputs.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: PRICING & INVENTORY -->
+                <section class="form-section">
+                    <h2 class="form-section-title">
+                        <span>03</span> Commercials & Inventory
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="price">Standard Selling Price (₹) <span class="required">*</span></label>
+                            <input type="number" id="price" min="1" placeholder="e.g. 65000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stock">Available In-Stock Units <span class="required">*</span></label>
+                            <input type="number" id="stock" min="0" placeholder="e.g. 12" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="condition">Condition <span class="optional-tag">(optional)</span></label>
+                            <select id="condition">
+                                <option value="New">Brand New</option>
+                                <option value="Refurbished">Certified Refurbished</option>
+                                <option value="Used">Used / Commercial Surplus</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="warranty">Warranty <span class="optional-tag">(optional)</span></label>
+                            <input type="text" id="warranty" placeholder="e.g. 2 Years Brand Warranty">
+                        </div>
+
+                        <div class="form-group full">
+                            <label for="description">Product Description <span class="optional-tag">(optional)</span></label>
+                            <textarea id="description" placeholder="Add any extra notes, included accessories, or package details..."></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <a href="products.html" class="cancel-button">Cancel</a>
+                    <button type="submit" class="submit-button">Save Product to Catalog</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/categories.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        DealerModule.requireDealerAuth();
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+    });
+
+    function onCategoryChange() {
+        const cat = document.getElementById("category").value;
+        const container = document.getElementById("categorySpecsContainer");
+        renderCategorySpecs(cat, container);
+    }
+
+    document.getElementById("productForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const msg = document.getElementById("formMessage");
+        msg.style.display = "none";
+
+        const category = document.getElementById("category").value;
+        const specsContainer = document.getElementById("categorySpecsContainer");
+        const specifications = collectCategorySpecs(specsContainer);
+
+        const product = {
+            title: document.getElementById("title").value.trim(),
+            category: category,
+            brand: document.getElementById("brand").value.trim() || null,
+            price: Number(document.getElementById("price").value) || 0,
+            stock: Number(document.getElementById("stock").value) || 0,
+            condition: document.getElementById("condition").value || "New",
+            warranty: document.getElementById("warranty").value.trim() || null,
+            description: document.getElementById("description").value.trim() || null,
+            specifications: specifications
+        };
+
+        try {
+            await DealerModule.addProduct(product);
+
+            msg.className = "form-message success";
+            msg.textContent = "Product successfully created in your catalog!";
+            msg.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            setTimeout(() => {
+                window.location.href = "products.html";
+            }, 1000);
+
+        } catch (err) {
+            msg.className = "form-message error";
+            msg.textContent = err.message || "Failed to save product.";
+            msg.style.display = "block";
+        }
+    });
+</script>
+
+</body>
+</html>

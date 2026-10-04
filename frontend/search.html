@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Marketplace - ReverseMarket</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .search-page-container {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .search-hero {
+            background: #0b0b0b;
+            color: white;
+            padding: 40px 25px 50px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .search-hero-inner {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .search-hero h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .search-hero h1 span {
+            color: #e50914;
+        }
+
+        .search-hero p {
+            color: #aaa;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .search-input-box {
+            display: flex;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 760px;
+            margin: auto;
+        }
+
+        .search-input-box select {
+            width: 140px;
+            border: none;
+            border-right: 1px solid #eee;
+            padding: 14px 15px;
+            font-size: 14px;
+            outline: none;
+            background: #fafafa;
+            color: #333;
+        }
+
+        .search-input-box input {
+            flex: 1;
+            border: none;
+            padding: 14px 18px;
+            font-size: 15px;
+            outline: none;
+            color: #111;
+        }
+
+        .search-input-box button {
+            background: #e50914;
+            color: white;
+            border: none;
+            padding: 0 28px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .search-input-box button:hover {
+            background: #b20710;
+        }
+
+        /* Content Layout */
+        .search-main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 25px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .filter-group {
+            margin-bottom: 22px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .filter-group h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .filter-group input[type="checkbox"],
+        .filter-group input[type="radio"] {
+            accent-color: #e50914;
+        }
+
+        /* Results Area */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 14px 20px;
+        }
+
+        .results-count {
+            font-size: 14px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .type-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .type-tab {
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #444;
+            transition: 0.2s;
+        }
+
+        .type-tab.active {
+            background: #0b0b0b;
+            color: white;
+            border-color: #0b0b0b;
+        }
+
+        .results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .result-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .result-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .result-top h3 {
+            font-size: 18px;
+            color: #111;
+        }
+
+        .badge-tag {
+            background: #f0f0f0;
+            color: #444;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .result-desc {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .result-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: #555;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .meta-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .action-link {
+            margin-left: auto;
+            background: #e50914;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .action-link:hover {
+            background: #b20710;
+        }
+
+        @media (max-width: 800px) {
+            .search-main {
+                grid-template-columns: 1fr;
+            }
+            .search-input-box {
+                flex-direction: column;
+            }
+            .search-input-box select,
+            .search-input-box button {
+                width: 100%;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="search-page-container">
+
+    <!-- Top Navigation -->
+    <header class="header">
+        <a href="index.html" class="logo">Reverse<span>Market</span></a>
+
+        <div style="margin-left: auto; display: flex; gap: 15px; align-items: center;">
+            <a href="login.html" style="color: white; font-weight: 600; font-size: 13px;">Sign In</a>
+            <a href="register.html" style="background: #e50914; color: white; padding: 7px 15px; border-radius: 4px; font-weight: 700; font-size: 13px;">Register</a>
+        </div>
+    </header>
+
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <div class="search-hero-inner">
+            <h1>Marketplace <span>Search</span></h1>
+            <p>Find customer procurement requirements or explore verified dealer products.</p>
+
+            <div class="search-input-box">
+                <select id="searchType" onchange="performSearch()">
+                    <option value="requirements">Requirements</option>
+                    <option value="products">Products</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search keywords (e.g. Laptops, Office, Furniture)..." oninput="performSearch()">
+                <button onclick="performSearch()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="search-main">
+
+        <!-- Sidebar Filter -->
+        <aside class="filter-sidebar">
+            <div class="filter-group">
+                <h3>Category</h3>
+                <label><input type="radio" name="cat" value="all" checked onchange="performSearch()"> All Categories</label>
+                <label><input type="radio" name="cat" value="computers" onchange="performSearch()"> Computers & Laptops</label>
+                <label><input type="radio" name="cat" value="electronics" onchange="performSearch()"> Electronics</label>
+                <label><input type="radio" name="cat" value="home" onchange="performSearch()"> Home & Furniture</label>
+                <label><input type="radio" name="cat" value="software" onchange="performSearch()"> Software & Services</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Location</h3>
+                <label><input type="radio" name="loc" value="all" checked onchange="performSearch()"> All Locations</label>
+                <label><input type="radio" name="loc" value="Chennai" onchange="performSearch()"> Chennai</label>
+                <label><input type="radio" name="loc" value="Bangalore" onchange="performSearch()"> Bangalore</label>
+                <label><input type="radio" name="loc" value="Mumbai" onchange="performSearch()"> Mumbai</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Role Mode</h3>
+                <label><a href="client/post-requirement.html" style="color: #e50914; font-weight: 700; text-decoration: none;">+ Post Requirement (Client)</a></label>
+                <label><a href="dealer/dashboard.html" style="color: #222; font-weight: 700; text-decoration: none;">Dealer Portal →</a></label>
+            </div>
+        </aside>
+
+        <!-- Results Area -->
+        <section>
+            <div class="results-header">
+                <span class="results-count" id="resultsCount">Loading items...</span>
+                <div class="type-tabs">
+                    <button class="type-tab active" id="tabReq" onclick="switchTab('requirements')">Requirements Feed</button>
+                    <button class="type-tab" id="tabProd" onclick="switchTab('products')">Product Catalog</button>
+                </div>
+            </div>
+
+            <div id="resultsList" class="results-grid"></div>
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    let currentTab = "requirements";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        performSearch();
+    });
+
+    function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById("searchType").value = tab;
+        document.getElementById("tabReq").classList.toggle("active", tab === "requirements");
+        document.getElementById("tabProd").classList.toggle("active", tab === "products");
+        performSearch();
+    }
+
+    function performSearch() {
+        const query = document.getElementById("searchInput").value.trim().toLowerCase();
+        const category = document.querySelector('input[name="cat"]:checked')?.value || 'all';
+        const location = document.querySelector('input[name="loc"]:checked')?.value || 'all';
+        const type = document.getElementById("searchType").value;
+
+        currentTab = type;
+        document.getElementById("tabReq").classList.toggle("active", type === "requirements");
+        document.getElementById("tabProd").classList.toggle("active", type === "products");
+
+        if (type === "requirements") {
+            renderRequirements(query, category, location);
+        } else {
+            renderProducts(query, category);
+        }
+    }
+
+    function renderRequirements(query, category, location) {
+        const stored = JSON.parse(localStorage.getItem("requirements") || "[]");
+        const defaultReqs = [
+            { id: 101, title: "10 Gaming Laptops", category: "computers", quantity: "10", budget: "800000", city: "Chennai", description: "High-spec RTX 4060 development laptops." },
+            { id: 102, title: "Office Ergonomic Furniture", category: "home", quantity: "25", budget: "250000", city: "Chennai", description: "Modular workstations and mesh chairs." },
+            { id: 103, title: "Corporate Business Portal & App", category: "software", quantity: "1", budget: "75000", city: "Bangalore", description: "Full-stack client portal." }
+        ];
+
+        const list = stored.length > 0 ? stored : defaultReqs;
+
+        const filtered = list.filter(item => {
+            if (category !== "all" && item.category !== category) return false;
+            if (location !== "all" && item.city !== location) return false;
+            if (query && !item.title.toLowerCase().includes(query) && !item.description?.toLowerCase().includes(query)) return false;
+            return true;
+        });
+
+        document.getElementById("resultsCount").textContent = `${filtered.length} Customer Requirement${filtered.length === 1 ? '' : 's'} Found`;
+
+        const container = document.getElementById("resultsList");
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="result-card" style="text-align:center; padding:40px; color:#777;">No matching requirements found.</div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(req => `
+            <div class="result-card">
+                <div class="result-top">
+                    <h3>${escapeHTML(req.title)}</h3>
+                    <span class="badge-tag">${escapeHTML(req.category || 'General')}</span>
+                </div>
+                <p class="result-desc">${escapeHTML(req.description || '')}</p>
+                <div class="result-meta-row">
+                    <span>Quantity: <strong>${escapeHTML(req.quantity || '1')}</strong></span>
+                    <span>City: <strong>${escapeHTML(req.city || 'Any')}</strong></span>
+                    <span class="meta-price">Budget: ₹${Number(req.budget || 0).toLocaleString("en-IN")}</span>
+                    <a href="dealer/submit-offer.html?reqId=${req.id}" class="action-link">Submit Offer →</a>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    function renderProducts(query, category) {
+        const defaultProducts = [
+            { id: 1, title: "Asus ROG Strix G16 (RTX 4060, 16GB RAM)", category: "computers", brand: "Asus", price: 72000, description: "Workstation laptop with Intel Core i7 13th Gen." },
+            { id: 2, title: "Lenovo Legion Pro 5 (Ryzen 7, 32GB RAM)", category: "computers", brand: "Lenovo", price: 68500, description: "High-spec multitasking laptop for development." },
+            { id: 3, title: "Executive High-Back Mesh Ergonomic Chair", category: "home", brand: "Featherlite", price: 8500, description: "Breathable Korean mesh with 3D armrests." }
+        ];
+
+        const stored = JSON.parse(localStorage.getItem("dealerProducts") || "[]");
+        const list = stored.length > 0 ? stored : defaultProducts;
+
+        const filtered = list.filter(item => {
+            if (category !== "all" && item.category !== category) return false;
+            if (query && !item.title.toLowerCase().includes(query) && !item.description?.toLowerCase().includes(query)) return false;
+            return true;
+        });
+
+        document.getElementById("resultsCount").textContent = `${filtered.length} Product${filtered.length === 1 ? '' : 's'} Found`;
+
+        const container = document.getElementById("resultsList");
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="result-card" style="text-align:center; padding:40px; color:#777;">No matching products found.</div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(prod => `
+            <div class="result-card">
+                <div class="result-top">
+                    <h3>${escapeHTML(prod.title)}</h3>
+                    <span class="badge-tag">${escapeHTML(prod.brand || 'Product')}</span>
+                </div>
+                <p class="result-desc">${escapeHTML(prod.description || '')}</p>
+                <div class="result-meta-row">
+                    <span>Category: <strong>${escapeHTML(prod.category || 'General')}</strong></span>
+                    <span class="meta-price">₹${Number(prod.price || 0).toLocaleString("en-IN")}</span>
+                    <a href="client/post-requirement.html" class="action-link">Post Requirement Like This →</a>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

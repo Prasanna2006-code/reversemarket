@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Top Offers - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .compare-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+            padding-bottom: 60px;
+        }
+
+        .client-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .compare-main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .breadcrumb a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .heading-text h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .heading-text p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .req-selector-bar {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 14px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .req-selector-bar select {
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* COMPARE TABLE */
+        .form-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .compare-table th,
+        .compare-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .compare-table th:last-child,
+        .compare-table td:last-child {
+            border-right: none;
+        }
+
+        .feature-col {
+            width: 220px;
+            background: #fafafa;
+            font-weight: 700;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .dealer-col {
+            min-width: 260px;
+            background: white;
+        }
+
+        .dealer-header-cell h3 {
+            font-size: 19px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .badge-verified {
+            display: inline-block;
+            background: #e7f5ff;
+            color: #1c7ed6;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .ai-match-score {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2b8a3e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-match-score.top-1 {
+            color: #e50914;
+        }
+
+        .price-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-lowest-price {
+            background: #e9f8ed;
+            color: #16852d;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .badge-fastest {
+            background: #fff3bf;
+            color: #b78103;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            border: 1px solid #ffe066;
+            margin-left: 6px;
+        }
+
+        .btn-select-dealer {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .btn-select-dealer:hover {
+            background: #b20710;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="compare-page">
+
+    <!-- Header -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="handleLogout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="home.html">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html" class="active">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="compare-main">
+
+        <div class="breadcrumb">
+            <a href="offers.html">Offers</a>
+            <span>›</span>
+            <span>Side-by-Side Comparison</span>
+        </div>
+
+        <div class="page-heading">
+            <div class="heading-text">
+                <h1>Top Offers Comparison</h1>
+                <p>Side-by-side evaluation matrix generated automatically from dealer catalog and proposal submissions.</p>
+            </div>
+            <a href="offers.html" class="cancel-button" style="text-decoration:none;">← Back to All Offers</a>
+        </div>
+
+        <div class="req-selector-bar">
+            <label for="reqSelect" style="font-size:14px; font-weight:700;">Comparing Requirement:</label>
+            <select id="reqSelect" onchange="onReqSelectChange()">
+                <option value="">Loading...</option>
+            </select>
+        </div>
+
+        <div id="compareContainer">
+            <p style="padding:20px; color:#666;">Loading comparative metrics...</p>
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    let requirements = [];
+    let compareOffers = [];
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        ClientModule.requireAuth();
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+        }
+
+        await initCompare();
+    });
+
+    async function initCompare() {
+        try {
+            requirements = await ClientModule.getMyRequirements();
+            const select = document.getElementById("reqSelect");
+            select.innerHTML = "";
+
+            if (requirements.length === 0) {
+                select.innerHTML = `<option value="">No requirements posted</option>`;
+                renderEmpty("You haven't posted any requirements yet.");
+                return;
+            }
+
+            requirements.forEach(r => {
+                const opt = document.createElement("option");
+                opt.value = String(r.id);
+                opt.textContent = `${r.title} (Qty: ${r.quantity || 1})`;
+                select.appendChild(opt);
+            });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const reqIdParam = urlParams.get("reqId");
+            if (reqIdParam && requirements.some(r => String(r.id) === String(reqIdParam))) {
+                select.value = reqIdParam;
+            } else {
+                select.value = String(requirements[0].id);
+            }
+
+            await loadComparisonForSelectedReq();
+
+        } catch (err) {
+            console.error("Init compare error:", err);
+            renderEmpty("Failed to load comparison data.");
+        }
+    }
+
+    async function onReqSelectChange() {
+        await loadComparisonForSelectedReq();
+    }
+
+    async function loadComparisonForSelectedReq() {
+        const reqId = document.getElementById("reqSelect").value;
+        if (!reqId) return;
+
+        const container = document.getElementById("compareContainer");
+        container.innerHTML = `<p style="padding:20px; color:#666;">Evaluating quotes side-by-side with AI...</p>`;
+
+        try {
+            const data = await ClientModule.getRankedOffers(reqId);
+            const allRanked = data.all_offers || [];
+
+            if (allRanked.length === 0) {
+                renderEmpty("No dealer offers submitted for this requirement yet.");
+                return;
+            }
+
+            // Check if user has specific selected compare offers from offers.html
+            const manualSelected = JSON.parse(localStorage.getItem("compareOffers") || "[]");
+            let targetOffers = [];
+
+            if (manualSelected.length >= 2) {
+                targetOffers = allRanked.filter(item => manualSelected.includes(String(item.offer.id)));
+            }
+
+            // Fallback to Requirement 10: Automatic Top 3 comparison!
+            if (targetOffers.length < 2) {
+                targetOffers = data.top_3 || allRanked.slice(0, 3);
+            }
+
+            renderComparisonMatrix(targetOffers);
+
+        } catch (err) {
+            console.error("Failed to load comparison:", err);
+            renderEmpty("Failed to load comparative quotes.");
+        }
+    }
+
+    function renderComparisonMatrix(items) {
+        const container = document.getElementById("compareContainer");
+
+        if (!items || items.length === 0) {
+            renderEmpty("Not enough offers to compare.");
+            return;
+        }
+
+        const minPrice = Math.min(...items.map(i => Number(i.offer.price) || Infinity));
+        const minDeliv = Math.min(...items.map(i => Number(i.offer.delivery_days) || Infinity));
+
+        container.innerHTML = `
+            <div class="form-card">
+                <div class="table-responsive">
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th class="feature-col">Feature Comparison</th>
+                                ${items.map(item => `
+                                    <th class="dealer-col">
+                                        <div class="dealer-header-cell">
+                                            <h3>${escapeHTML(item.offer.dealer_name)}</h3>
+                                            ${item.offer.verified ? '<span class="badge-verified">✓ Verified Dealer</span>' : ''}
+                                            <div style="font-size:12px; color:#666; margin-top:4px;">
+                                                Rank #${item.rank} Overall
+                                            </div>
+                                        </div>
+                                    </th>
+                                `).join("")}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- AI MATCH SCORE -->
+                            <tr>
+                                <td class="feature-col">AI Match Score</td>
+                                ${items.map(item => `
+                                    <td>
+                                        <div class="ai-match-score ${item.rank === 1 ? 'top-1' : ''}">
+                                            ★ ${item.match_score}%
+                                            <small style="font-size:12px; font-weight:normal; color:#666;">Match</small>
+                                        </div>
+                                    </td>
+                                `).join("")}
+                            </tr>
+
+                            <!-- PRICE -->
+                            <tr>
+                                <td class="feature-col">Quoted Price</td>
+                                ${items.map(item => {
+                                    const isLowest = Number(item.offer.price) === minPrice;
+                                    return `
+                                        <td>
+                                            <div class="price-text">
+                                                ₹${Number(item.offer.price).toLocaleString("en-IN")}
+                                                ${isLowest ? '<span class="badge-lowest-price">★ Lowest</span>' : ''}
+                                            </div>
+                                        </td>
+                                    `;
+                                }).join("")}
+                            </tr>
+
+                            <!-- DELIVERY TIMELINE -->
+                            <tr>
+                                <td class="feature-col">Delivery Timeline</td>
+                                ${items.map(item => {
+                                    const isFastest = Number(item.offer.delivery_days) === minDeliv;
+                                    return `
+                                        <td>
+                                            <strong>${item.offer.delivery_days} Days</strong>
+                                            ${isFastest ? '<span class="badge-fastest">⚡ Fastest</span>' : ''}
+                                        </td>
+                                    `;
+                                }).join("")}
+                            </tr>
+
+                            <!-- DEALER RATING -->
+                            <tr>
+                                <td class="feature-col">Dealer Rating & Trust</td>
+                                ${items.map(item => `
+                                    <td>
+                                        <span style="color:#f59f00; font-weight:bold;">★ ${item.offer.rating || 4.8}</span>
+                                        <span style="color:#666; font-size:12px;">(${item.offer.reviews || 50} reviews)</span>
+                                    </td>
+                                `).join("")}
+                            </tr>
+
+                            <!-- WARRANTY -->
+                            <tr>
+                                <td class="feature-col">Warranty Coverage</td>
+                                ${items.map(item => `
+                                    <td>${escapeHTML(item.offer.warranty || 'Unavailable / None')}</td>
+                                `).join("")}
+                            </tr>
+
+                            <!-- IN-STOCK QUANTITY -->
+                            <tr>
+                                <td class="feature-col">Available Stock</td>
+                                ${items.map(item => {
+                                    const stockVal = item.product?.stock !== undefined ? item.product.stock : 'In Stock';
+                                    return `<td><strong>${stockVal} units</strong></td>`;
+                                }).join("")}
+                            </tr>
+
+                            <!-- CONDITION -->
+                            <tr>
+                                <td class="feature-col">Item Condition</td>
+                                ${items.map(item => `
+                                    <td>${escapeHTML(item.offer.condition || 'New')}</td>
+                                `).join("")}
+                            </tr>
+
+                            <!-- PRODUCT SPECS -->
+                            <tr>
+                                <td class="feature-col">Product / Specifications</td>
+                                ${items.map(item => {
+                                    const pTitle = item.offer.product_title || 'Custom Quote';
+                                    const specs = item.offer.product_specifications || item.product?.specifications || {};
+                                    const keys = Object.keys(specs);
+                                    return `
+                                        <td>
+                                            <strong>${escapeHTML(pTitle)}</strong>
+                                            ${keys.length > 0 ? `
+                                                <div style="font-size:12px; color:#555; margin-top:4px;">
+                                                    ${keys.map(k => `${escapeHTML(k)}: ${escapeHTML(specs[k])}`).join(" · ")}
+                                                </div>
+                                            ` : ''}
+                                        </td>
+                                    `;
+                                }).join("")}
+                            </tr>
+
+                            <!-- PAYMENT TERMS -->
+                            <tr>
+                                <td class="feature-col">Payment Terms</td>
+                                ${items.map(item => `
+                                    <td>${escapeHTML(item.offer.payment_terms || 'UPI / Escrow')}</td>
+                                `).join("")}
+                            </tr>
+
+                            <!-- DECISION BUTTON -->
+                            <tr>
+                                <td class="feature-col">Select Offer</td>
+                                ${items.map(item => `
+                                    <td>
+                                        <button class="btn-select-dealer" onclick="selectCompareDealer(${item.offer.id})">
+                                            Select Dealer →
+                                        </button>
+                                    </td>
+                                `).join("")}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }
+
+    function selectCompareDealer(offerId) {
+        localStorage.setItem("selectedOfferId", String(offerId));
+        window.location.href = `cart-checkout.html?offerId=${offerId}`;
+    }
+
+    function renderEmpty(message) {
+        document.getElementById("compareContainer").innerHTML = `
+            <div class="empty-state">
+                <div style="font-size:42px; margin-bottom:12px;">⚖️</div>
+                <h2>Not Enough Quotes to Compare</h2>
+                <p>${escapeHTML(message)}</p>
+                <a href="offers.html" class="btn-select-dealer" style="display:inline-block; width:auto; margin-top:10px;">
+                    Browse All Offers
+                </a>
+            </div>
+        `;
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

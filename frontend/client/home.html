@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* =========================
+           PAGE & BASE
+        ========================= */
+        .client-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        /* =========================
+           HEADER (MATCHING POST-REQUIREMENT)
+        ========================= */
+        .client-header {
+            background: #0b0b0b;
+            color: white;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .client-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .client-logo span {
+            color: #e50914;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        /* =========================
+           NAV
+        ========================= */
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+        .dashboard-main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-section h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 6px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .post-button {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            padding: 11px 22px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .post-button:hover {
+            background: #b20710;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #e50914;
+        }
+
+        .stat-card small {
+            color: #666;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 28px;
+            color: #111;
+        }
+
+        .stat-card span {
+            color: #888;
+            font-size: 12px;
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+        .section-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .action-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fafafa;
+        }
+
+        .action-card:hover {
+            border-color: #e50914;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.1);
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0b0b;
+            color: white;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .action-card h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #111;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* =========================
+           REQUIREMENTS + OFFERS GRID
+        ========================= */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 20px;
+        }
+
+        .requirement-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .requirement-item:hover {
+            background: #fdfdfd;
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+
+        .requirement-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #111;
+        }
+
+        .requirement-info p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status.open {
+            background: #e9f8ed;
+            color: #16852d;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.offers {
+            background: #eef2ff;
+            color: #3b5bdb;
+            border: 1px solid #d0dbfc;
+        }
+
+        .status.completed {
+            background: #f1f3f5;
+            color: #868e96;
+            border: 1px solid #dee2e6;
+        }
+
+        .offer-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 14px;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+
+        .offer-card:hover {
+            border-color: #bbb;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .offer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .offer-top strong {
+            font-size: 15px;
+            color: #111;
+        }
+
+        .offer-price {
+            font-size: 17px;
+            font-weight: 800;
+            color: #e50914;
+        }
+
+        .offer-card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .view-offer {
+            color: #e50914;
+            font-weight: 700;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .view-offer:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+        @media (max-width: 900px) {
+            .client-header {
+                padding: 10px 15px;
+            }
+
+            .header-user {
+                display: none;
+            }
+
+            .dashboard-main {
+                padding: 25px 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="client-page">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+    <header class="client-header">
+        <a href="home.html" class="client-logo">
+            Reverse<span>Market</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Hello,</small>
+                <strong id="userName">Client</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+    <nav class="dashboard-nav">
+        <a href="home.html" class="active">Dashboard</a>
+        <a href="post-requirement.html">Post Requirement</a>
+        <a href="requirements.html">My Requirements</a>
+        <a href="offers.html">Offers</a>
+        <a href="compare.html">Compare</a>
+        <a href="orders.html">My Orders</a>
+    </nav>
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+    <main class="dashboard-main">
+
+        <!-- Welcome Banner -->
+        <section class="welcome-section">
+            <div>
+                <h1>Welcome back, <span id="welcomeName">Client</span></h1>
+                <p>Post your requirements, receive competitive dealer offers, and buy at the best price.</p>
+            </div>
+
+            <a href="post-requirement.html" class="post-button">
+                + Post Requirement
+            </a>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card" onclick="location.href='requirements.html'" style="cursor: pointer;">
+                <small>Active Requirements</small>
+                <strong id="statRequirements">3</strong>
+                <span>Currently open for bids</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='offers.html'" style="cursor: pointer;">
+                <small>Offers Received</small>
+                <strong id="statOffers">4</strong>
+                <span>From verified dealers</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='orders.html'" style="cursor: pointer;">
+                <small>Confirmed Orders</small>
+                <strong id="statOrders">2</strong>
+                <span>Total orders placed</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='orders.html'" style="cursor: pointer;">
+                <small>Completed Deliveries</small>
+                <strong id="statCompleted">1</strong>
+                <span>Successfully delivered</span>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="section-card">
+            <h2 class="section-title">
+                <span>01</span>
+                Quick Actions
+            </h2>
+
+            <div class="action-grid">
+                <div class="action-card" onclick="goTo('post-requirement.html')">
+                    <div class="action-icon">+</div>
+                    <h3>Post Requirement</h3>
+                    <p>Tell dealers exactly what products or services you need.</p>
+                </div>
+
+                <div class="action-card" onclick="goTo('requirements.html')">
+                    <div class="action-icon">📋</div>
+                    <h3>My Requirements</h3>
+                    <p>Track, manage, and close your posted requirements.</p>
+                </div>
+
+                <div class="action-card" onclick="goTo('offers.html')">
+                    <div class="action-icon">🏷️</div>
+                    <h3>View Offers</h3>
+                    <p>Review quotes, warranties, and prices from dealers.</p>
+                </div>
+
+                <div class="action-card" onclick="goTo('orders.html')">
+                    <div class="action-icon">📦</div>
+                    <h3>My Orders</h3>
+                    <p>Track confirmed purchases and shipment deliveries.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Grid -->
+        <div class="content-grid">
+
+            <!-- Recent Requirements -->
+            <section class="section-card">
+                <h2 class="section-title">
+                    <span>02</span>
+                    Recent Requirements
+                </h2>
+
+                <div id="recentRequirementsList">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Latest Offers -->
+            <section class="section-card">
+                <h2 class="section-title">
+                    <span>03</span>
+                    Latest Dealer Offers
+                </h2>
+
+                <div id="latestOffersList">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/client.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        loadUser();
+        initDashboard();
+    });
+
+    function loadUser() {
+        const user = ClientModule.getUser();
+        if (user && user.name) {
+            document.getElementById("userName").textContent = user.name;
+            document.getElementById("welcomeName").textContent = user.name.split(" ")[0];
+        }
+    }
+
+    async function initDashboard() {
+        const requirements = await ClientModule.getMyRequirements();
+        const orders = await ClientModule.getMyOrders();
+
+        // Count offers across client's requirements
+        let allOffers = [];
+        for (const req of requirements) {
+            try {
+                const reqOffers = await ClientModule.getOffersForRequirement(req.id);
+                allOffers.push(...reqOffers);
+            } catch (e) {
+                console.warn("Could not fetch offers for requirement", req.id, e);
+            }
+        }
+
+        // Update counts
+        const activeReqCount = requirements.filter(r => r.status === 'open' || r.status === 'pending').length;
+        const completedOrdersCount = orders.filter(o => o.status === 'Delivered').length;
+
+        document.getElementById("statRequirements").textContent = activeReqCount || requirements.length;
+        document.getElementById("statOffers").textContent = allOffers.length;
+        document.getElementById("statOrders").textContent = orders.length;
+        document.getElementById("statCompleted").textContent = completedOrdersCount;
+
+        // Render Recent Requirements
+        const reqList = document.getElementById("recentRequirementsList");
+        if (requirements.length === 0) {
+            reqList.innerHTML = `<p style="color:#888; padding:15px 0;">No requirements posted yet. Click "+ Post Requirement" to get started.</p>`;
+        } else {
+            reqList.innerHTML = requirements.slice(0, 3).map(req => {
+                const statusClass = (req.status === 'completed' || req.status === 'closed') 
+                    ? 'completed' 
+                    : 'open';
+                const statusText = req.status ? (req.status.charAt(0).toUpperCase() + req.status.slice(1)) : 'Open';
+                const budgetText = req.budget ? `Budget: ₹${Number(req.budget).toLocaleString("en-IN")}` : 'Budget: Flexible';
+
+                return `
+                    <div class="requirement-item" onclick="location.href='offers.html?reqId=${req.id}'">
+                        <div class="requirement-info">
+                            <h3>${escapeHTML(req.title)}</h3>
+                            <p>Quantity: ${escapeHTML(req.quantity || '1')} · ${budgetText} · City: ${escapeHTML(req.city || 'Any')}</p>
+                        </div>
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // Render Latest Offers
+        const offerList = document.getElementById("latestOffersList");
+        if (allOffers.length === 0) {
+            offerList.innerHTML = `<p style="color:#888; padding:15px 0;">No quotes received yet. When dealers submit quotes, they will appear here.</p>`;
+        } else {
+            offerList.innerHTML = allOffers.slice(0, 2).map(offer => {
+                return `
+                    <div class="offer-card">
+                        <div class="offer-top">
+                            <strong>${escapeHTML(offer.dealer_name || 'Verified Dealer')}</strong>
+                            <span class="offer-price">₹${Number(offer.price || 0).toLocaleString("en-IN")}</span>
+                        </div>
+                        <p>For: ${escapeHTML(offer.requirement_title || 'Requirement')} · Delivery: ${offer.delivery_days || 5} days</p>
+                        <a class="view-offer" href="offers.html?reqId=${offer.requirement_id}">
+                            View Ranked Offers →
+                        </a>
+                    </div>
+                `;
+            }).join("");
+        }
+    }
+
+    function goTo(page) {
+        window.location.href = page;
+    }
+
+    function logout() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

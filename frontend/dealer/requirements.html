@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Requirements - ReverseMarket Dealer</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .controls-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #444;
+            transition: 0.2s;
+        }
+
+        .filter-tab:hover {
+            background: #e5e5e5;
+        }
+
+        .filter-tab.active {
+            background: #0b0b0b;
+            color: white;
+            border-color: #0b0b0b;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            height: 38px;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #e50914;
+            box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.1);
+        }
+
+        .req-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: 0.2s;
+        }
+
+        .req-card:hover {
+            border-color: #bbb;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        }
+
+        .req-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .req-card-top h3 {
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .badge-cat {
+            background: #f0f0f0;
+            color: #555;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .budget-tag {
+            text-align: right;
+        }
+
+        .budget-amount {
+            font-size: 24px;
+            font-weight: 800;
+            color: #e50914;
+            display: block;
+        }
+
+        .budget-label {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .req-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding: 16px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+        }
+
+        .detail-item small {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .detail-item strong {
+            font-size: 14px;
+            color: #111;
+        }
+
+        .req-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-view {
+            background: white;
+            color: #333;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .btn-view:hover {
+            background: #f3f3f3;
+        }
+
+        .btn-submit-quote {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            border-radius: 4px;
+            padding: 9px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit-quote:hover {
+            background: #b20710;
+        }
+
+        @media (max-width: 768px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .budget-tag {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">TechWorld Electronics</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="requirements.html" class="active">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main -->
+    <main class="dealer-main">
+
+        <div class="page-heading">
+            <h1>Customer Requirements Feed</h1>
+            <p>Review active procurement requests from verified clients and submit your quotation to win the deal.</p>
+        </div>
+
+        <div class="controls-card">
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterByCat('all', this)">All Categories</button>
+                <button class="filter-tab" onclick="filterByCat('computers', this)">Computers</button>
+                <button class="filter-tab" onclick="filterByCat('home', this)">Furniture</button>
+                <button class="filter-tab" onclick="filterByCat('software', this)">Software</button>
+            </div>
+
+            <div class="search-input-wrapper">
+                <input type="text" id="searchInput" placeholder="Search requirements..." oninput="handleSearch()">
+            </div>
+        </div>
+
+        <div id="requirementsList"></div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    let requirements = [];
+    let activeCat = 'all';
+    let searchQuery = '';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+
+        requirements = await DealerModule.getMarketplaceRequirements();
+        renderRequirements();
+    });
+
+    function filterByCat(cat, el) {
+        activeCat = cat;
+        document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+        if (el) el.classList.add("active");
+        renderRequirements();
+    }
+
+    function handleSearch() {
+        searchQuery = document.getElementById("searchInput").value.trim().toLowerCase();
+        renderRequirements();
+    }
+
+    function renderRequirements() {
+        const container = document.getElementById("requirementsList");
+
+        const filtered = requirements.filter(req => {
+            if (activeCat !== 'all' && req.category !== activeCat) return false;
+            if (searchQuery) {
+                return (req.title || '').toLowerCase().includes(searchQuery) ||
+                       (req.description || '').toLowerCase().includes(searchQuery) ||
+                       (req.city || '').toLowerCase().includes(searchQuery);
+            }
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div style="background:white; border:1px solid #ddd; border-radius:6px; padding:60px 20px; text-align:center;">
+                    <h2>No Requirements Found</h2>
+                    <p style="color:#666; margin-top:8px;">Check back later as new client requirements are published continuously.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = filtered.map(req => {
+            const formattedBudget = req.budget ? `₹${Number(req.budget).toLocaleString("en-IN")}` : 'Flexible';
+            return `
+                <div class="req-card">
+                    <div class="req-card-top">
+                        <div>
+                            <h3>${escapeHTML(req.title)}</h3>
+                            <span class="badge-cat">${escapeHTML(req.category || 'General')}</span>
+                        </div>
+
+                        <div class="budget-tag">
+                            <span class="budget-amount">${formattedBudget}</span>
+                            <span class="budget-label">Client's Max Budget</span>
+                        </div>
+                    </div>
+
+                    <p class="req-desc">${escapeHTML(req.description || 'No detailed specs.')}</p>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <small>Quantity Needed</small>
+                            <strong>${escapeHTML(req.quantity || '1')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Location</small>
+                            <strong>${escapeHTML(req.city || 'Any City')}, ${escapeHTML(req.state || '')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Required By</small>
+                            <strong>${escapeHTML(req.deadline || 'Flexible')}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <small>Fulfillment</small>
+                            <strong style="text-transform: capitalize;">${escapeHTML(req.fulfillment || 'Delivery')}</strong>
+                        </div>
+                    </div>
+
+                    <div class="req-footer">
+                        <span style="font-size:12px; color:#888;">Requirement ID: #${req.id}</span>
+
+                        <div class="action-btns">
+                            <a href="requirement-details.html?id=${req.id}" class="btn-view">
+                                View Specs
+                            </a>
+                            <a href="submit-offer.html?reqId=${req.id}" class="btn-submit-quote">
+                                Submit Quotation →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>

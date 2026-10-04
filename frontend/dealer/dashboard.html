@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Dashboard - ReverseMarket</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .dealer-page {
+            min-height: 100vh;
+            background: #f3f3f3;
+        }
+
+        .dealer-header {
+            min-height: 64px;
+            background: #0b0b0b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dealer-logo span {
+            color: #e50914;
+        }
+
+        .dealer-badge {
+            background: #202020;
+            border: 1px solid #444;
+            color: #aaa;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-user small {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .header-user strong {
+            font-size: 14px;
+        }
+
+        .logout-button {
+            background: transparent;
+            border: 1px solid #555;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .logout-button:hover {
+            border-color: #e50914;
+            color: #ff1f2d;
+        }
+
+        .dashboard-nav {
+            background: #202020;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 0 25px;
+            overflow-x: auto;
+        }
+
+        .dashboard-nav a {
+            color: white;
+            padding: 13px 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .dashboard-nav a:hover,
+        .dashboard-nav a.active {
+            color: #ff1f2d;
+            border-bottom: 2px solid #e50914;
+        }
+
+        .dealer-main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 35px 25px;
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .welcome-section h1 {
+            font-size: 30px;
+            color: #111;
+            margin-bottom: 6px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            padding: 11px 22px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: #b20710;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #e50914;
+        }
+
+        .stat-card small {
+            color: #666;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 28px;
+            color: #111;
+        }
+
+        .stat-card span {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-title {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: #111;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title span {
+            color: #e50914;
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .action-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fafafa;
+        }
+
+        .action-card:hover {
+            border-color: #e50914;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.1);
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0b0b;
+            color: white;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .action-card h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #111;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 20px;
+        }
+
+        .req-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .req-item:last-child {
+            border-bottom: none;
+        }
+
+        .req-info h3 {
+            font-size: 16px;
+            color: #111;
+            margin-bottom: 4px;
+        }
+
+        .req-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .btn-bid {
+            background: #e50914;
+            color: white;
+            border: 1px solid #e50914;
+            padding: 7px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-bid:hover {
+            background: #b20710;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid,
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid,
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dealer-page">
+
+    <!-- Header -->
+    <header class="dealer-header">
+        <a href="dashboard.html" class="dealer-logo">
+            Reverse<span>Market</span>
+            <span class="dealer-badge">Dealer Portal</span>
+        </a>
+
+        <div class="header-right">
+            <div class="header-user">
+                <small>Welcome Dealer,</small>
+                <strong id="dealerName">TechWorld Electronics</strong>
+            </div>
+
+            <button class="logout-button" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="dashboard-nav">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="requirements.html">Browse Requirements</a>
+        <a href="submit-offer.html">Submit Offer</a>
+        <a href="offers.html">My Offers</a>
+        <a href="products.html">Product Catalog</a>
+        <a href="add-product.html">+ Add Product</a>
+        <a href="orders.html">Orders Won</a>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="dealer-main">
+
+        <!-- Welcome Banner -->
+        <section class="welcome-section">
+            <div>
+                <h1>Dealer Dashboard</h1>
+                <p>Browse active procurement requests from business clients and submit your most competitive quotations.</p>
+            </div>
+
+            <a href="requirements.html" class="cta-btn">
+                Browse Live Requirements →
+            </a>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card" onclick="location.href='requirements.html'" style="cursor: pointer;">
+                <small>Open Marketplace Inquiries</small>
+                <strong id="statOpenReqs">3</strong>
+                <span>Clients seeking quotes</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='offers.html'" style="cursor: pointer;">
+                <small>Submitted Offers</small>
+                <strong id="statOffers">4</strong>
+                <span>Active proposals</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='orders.html'" style="cursor: pointer;">
+                <small>Confirmed Orders Won</small>
+                <strong id="statOrders">2</strong>
+                <span>Ready for dispatch</span>
+            </div>
+
+            <div class="stat-card" onclick="location.href='products.html'" style="cursor: pointer;">
+                <small>Catalog Inventory</small>
+                <strong id="statProducts">3</strong>
+                <span>Products listed</span>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="section-card">
+            <h2 class="section-title">
+                <span>01</span>
+                Dealer Management Shortcuts
+            </h2>
+
+            <div class="action-grid">
+                <div class="action-card" onclick="location.href='requirements.html'">
+                    <div class="action-icon">🔍</div>
+                    <h3>Customer Inquiries</h3>
+                    <p>Discover client requirements needing quotes.</p>
+                </div>
+
+                <div class="action-card" onclick="location.href='submit-offer.html'">
+                    <div class="action-icon">✍️</div>
+                    <h3>Submit Quotation</h3>
+                    <p>Send a competitive price and terms proposal.</p>
+                </div>
+
+                <div class="action-card" onclick="location.href='add-product.html'">
+                    <div class="action-icon">+</div>
+                    <h3>Add Catalog Item</h3>
+                    <p>Expand your offered products and inventory.</p>
+                </div>
+
+                <div class="action-card" onclick="location.href='orders.html'">
+                    <div class="action-icon">📦</div>
+                    <h3>Fulfill Orders</h3>
+                    <p>Track delivery dispatch and payments.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Content Grid -->
+        <div class="content-grid">
+
+            <!-- Latest Customer Inquiries -->
+            <section class="section-card">
+                <h2 class="section-title">
+                    <span>02</span>
+                    Recent Marketplace Inquiries
+                </h2>
+
+                <div id="inquiriesList">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+            <!-- Latest Orders Won -->
+            <section class="section-card">
+                <h2 class="section-title">
+                    <span>03</span>
+                    Recent Orders Won
+                </h2>
+
+                <div id="ordersList">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/dealer.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        loadDealerProfile();
+        initDashboard();
+    });
+
+    function loadDealerProfile() {
+        const user = DealerModule.getUser();
+        if (user && user.name) {
+            document.getElementById("dealerName").textContent = user.name;
+        }
+    }
+
+    async function initDashboard() {
+        const requirements = await DealerModule.getMarketplaceRequirements();
+        const offers = await DealerModule.getDealerOffers();
+        const orders = await DealerModule.getDealerOrders();
+        const products = await DealerModule.getProducts();
+
+        document.getElementById("statOpenReqs").textContent = requirements.length;
+        document.getElementById("statOffers").textContent = offers.length;
+        document.getElementById("statOrders").textContent = orders.length;
+        document.getElementById("statProducts").textContent = products.length;
+
+        // Render Inquiries
+        const inqContainer = document.getElementById("inquiriesList");
+        inqContainer.innerHTML = requirements.slice(0, 3).map(req => `
+            <div class="req-item">
+                <div class="req-info">
+                    <h3>${escapeHTML(req.title)}</h3>
+                    <p>Qty: ${escapeHTML(req.quantity || '1')} · Location: ${escapeHTML(req.city || 'Any')} · Budget: ₹${Number(req.budget || 0).toLocaleString("en-IN")}</p>
+                </div>
+                <a href="submit-offer.html?reqId=${req.id}" class="btn-bid">
+                    Submit Offer →
+                </a>
+            </div>
+        `).join("");
+
+        // Render Orders
+        const ordContainer = document.getElementById("ordersList");
+        ordContainer.innerHTML = orders.slice(0, 2).map(ord => `
+            <div class="req-item">
+                <div class="req-info">
+                    <h3>#${escapeHTML(ord.id)}</h3>
+                    <p>${escapeHTML(ord.requirement?.title || 'Order')} · ₹${Number(ord.amount || 0).toLocaleString("en-IN")}</p>
+                </div>
+                <span style="font-size:12px; font-weight:700; color:#16852d;">${escapeHTML(ord.status || 'Confirmed')}</span>
+            </div>
+        `).join("");
+    }
+
+    function logout() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        window.location.href = "../index.html";
+    }
+
+    function escapeHTML(str) {
+        return String(str ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+</script>
+
+</body>
+</html>
